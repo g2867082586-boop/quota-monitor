@@ -344,17 +344,14 @@ const HOURS_TREND = (() => { const a = []; for (let h = 8; h <= 23; h++) a.push(
 const DAYS_TREND = ["日","一","二","三","四","五","六"];
 
 let batchesTrend = [];
-let monitoringSinceTrend = null;
 let selectedTrendPeriod = 7;
 
 async function loadTrendData() {
   batchesTrend = [];
-  monitoringSinceTrend = null;
   try {
     const resp = await fetchFresh("data/release_log.json");
     if (resp.ok) {
       const data = await resp.json();
-      if (data.monitoring_since) monitoringSinceTrend = new Date(data.monitoring_since);
       const events = Array.isArray(data.events) ? data.events : [];
       batchesTrend = events
         .map(event => ({
@@ -398,16 +395,8 @@ function fmtTrendTime(ts) {
 }
 
 function updateCountdown() {
-  const value = document.getElementById("tcVal");
-  const meta = document.getElementById("tcMeta");
-  value.textContent = batchesTrend.length > 0 ? fmtTrendTime(batchesTrend[0].t) : "暂无记录";
-  if (batchesTrend.length > 0) {
-    meta.textContent = `本仓库已记录 ${batchesTrend.length} 个放号批次`;
-  } else if (monitoringSinceTrend && !Number.isNaN(monitoringSinceTrend.getTime())) {
-    meta.textContent = `自 ${fmtTrendTime(monitoringSinceTrend)} 开始监控`;
-  } else {
-    meta.textContent = "等待本仓库捕获首次放号";
-  }
+  document.getElementById("tcVal").textContent =
+    batchesTrend.length > 0 ? fmtTrendTime(batchesTrend[0].t) : "暂无记录";
 }
 
 function fmtDate(ts) {

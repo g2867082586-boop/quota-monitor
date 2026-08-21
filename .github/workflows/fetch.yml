@@ -51,6 +51,7 @@ jobs:
         run: python ci_run.py
 
       - name: Commit updated data
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.test_wecom != true }}
         continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
@@ -63,9 +64,11 @@ jobs:
           fi
 
       - name: Setup Pages
+        if: ${{ vars.ENABLE_PAGES == 'true' && (github.event_name != 'workflow_dispatch' || inputs.test_wecom != true) }}
         uses: actions/configure-pages@v4
 
       - name: Prepare Pages site
+        if: ${{ vars.ENABLE_PAGES == 'true' && (github.event_name != 'workflow_dispatch' || inputs.test_wecom != true) }}
         run: |
           mkdir -p _site/data
           cp -r web/* _site/
@@ -75,9 +78,11 @@ jobs:
           if [ -f data/run.log ]; then cp data/run.log _site/data/; fi
 
       - name: Upload Pages artifact
+        if: ${{ vars.ENABLE_PAGES == 'true' && (github.event_name != 'workflow_dispatch' || inputs.test_wecom != true) }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
       - name: Deploy to GitHub Pages
+        if: ${{ vars.ENABLE_PAGES == 'true' && (github.event_name != 'workflow_dispatch' || inputs.test_wecom != true) }}
         uses: actions/deploy-pages@v4

@@ -57,7 +57,9 @@ python ci_run.py
 4. Actions → `Fetch Quota & Notify` → Run workflow，勾选 `test_wecom` 验证企业微信；
    此模式不抓取、不更新 `state.json`。
 5. 可选：部署 Cloudflare Worker（`workers/subscribe.js`），用于飞书 DM 订阅 API + 管理后台 API + 管理员群发。
-6. 可选：Settings → Pages → Source: GitHub Actions。
+6. 可选：如需公开看板，设置 `Settings → Pages → Source: GitHub Actions`，再到
+   `Settings → Secrets and variables → Actions → Variables` 添加
+   `ENABLE_PAGES=true`。未配置该变量时跳过 Pages，不影响配额检测和企业微信通知。
 7. 配置 cron-job.org 或自己的定时服务每 2 分钟 POST：
 
    ```text

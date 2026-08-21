@@ -1,10 +1,18 @@
+import json
 import os
+import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
 import requests
 
-from ci_run import _send_wecom_broadcast, _wecom_webhook_urls
+from ci_run import (
+    _format_wecom_message,
+    _record_release_event,
+    _send_wecom_broadcast,
+    _wecom_webhook_urls,
+)
+from quota_monitor.core import format_changes
 from quota_monitor.notify import WECOM_MARKDOWN_MAX_BYTES, send_wecom_webhook
 
 WECOM_URL = (
@@ -70,6 +78,62 @@ class WecomNotifyTests(unittest.TestCase):
             _wecom_webhook_urls(),
             [WECOM_URL, f"{WECOM_URL}&group=second"],
         )
+
+    def test_ci_removes_group_link_and_everything_after_it(self):
+        message = (
+            "🟢 **新放出名额！**\n\n"
+            "📋 预约办理：https://example.test/booking\n"
+            "🪧 配额查询：https://example.test/quota\n"
+            "📖 加群方式：https://example.test/group\n\n"
+            "⚠️ 原项目免责声明"
+        )
+
+        formatted = _format_wecom_message(message)
+
+        self.assertIn("📋 预约办理", formatted)
+        self.assertIn("🪧 配额查询", formatted)
+        self.assertNotIn("📖 加群方式", formatted)
+        self.assertNotIn("⚠️ 原项目免责声明", formatted)
+
+    def test_quota_message_uses_fork_dashboard(self):
+        message = _format_wecom_message(format_changes({
+            "newly_available": [
+                (("09/01/2026", "FTO", "R"), "quota-r", "quota-g"),
+            ],
+        }))
+
+        self.assertIn(
+            "https://g2867082586-boop.github.io/quota-monitor/",
+            message,
+        )
+        self.assertNotIn("https://Zheyi-D.github.io/quota-monitor", message)
+
+    def test_records_only_this_forks_release_history(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "release_log.json")
+            with open(path, "w", encoding="utf-8") as handle:
+                json.dump({
+                    "version": 1,
+                    "monitoring_since": "2026-08-21T10:38:41+08:00",
+                    "events": [],
+                }, handle)
+
+            event = _record_release_event(
+                [(("09/01/2026", "FTO", "R"), "quota-r", "quota-g")],
+                path=path,
+                now="2026-08-21T12:00:00+08:00",
+            )
+
+            with open(path, encoding="utf-8") as handle:
+                release_log = json.load(handle)
+
+        self.assertEqual(
+            release_log["monitoring_since"],
+            "2026-08-21T10:38:41+08:00",
+        )
+        self.assertEqual(event["count"], 1)
+        self.assertEqual(release_log["events"], [event])
+        self.assertEqual(event["items"][0]["office"], "FTO")
 
     @patch.dict(
         os.environ,

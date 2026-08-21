@@ -238,7 +238,7 @@ def format_changes(changes, offices=None):
 
     # 默认链接（模板中可覆盖）
     default_links = {
-        "dashboard_url": "https://Zheyi-D.github.io/quota-monitor",
+        "dashboard_url": "https://g2867082586-boop.github.io/quota-monitor/",
         "booking_url": "https://www.gov.hk/sc/apps/immdicbooking2.htm",
         "quota_url": "https://eservices.es2.immd.gov.hk/es/quota-enquiry-client/?l=zh-CN&appId=579",
         "group_url": "https://scn7uo58gnuo.feishu.cn/wiki/QSFlwcMBmil7sGkZRBTcAWqwnCf",

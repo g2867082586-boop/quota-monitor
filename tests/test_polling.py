@@ -2,7 +2,7 @@ import os
 import unittest
 from unittest.mock import call, patch
 
-from ci_run import _poll_settings, main
+from ci_run import _notification_rearm_seconds, _poll_settings, main
 
 
 class PollSettingsTest(unittest.TestCase):
@@ -25,6 +25,16 @@ class PollSettingsTest(unittest.TestCase):
             clear=True,
         ):
             self.assertEqual(_poll_settings(), (1, 30))
+
+    def test_notification_rearm_defaults_to_thirty_minutes(self):
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(_notification_rearm_seconds(), 1800)
+
+    def test_notification_rearm_rejects_invalid_values(self):
+        with patch.dict(
+            os.environ, {"NOTIFICATION_REARM_SECONDS": "90000"}, clear=True
+        ):
+            self.assertEqual(_notification_rearm_seconds(), 1800)
 
 
 class PollLoopTest(unittest.TestCase):

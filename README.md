@@ -61,6 +61,10 @@
 
 各通道失败互不影响；企业微信超长 Markdown 会自动安全分片。
 
+同一日期、办事处和时段在官网红/黄状态快速抖动时，只在首次放号时广播。
+通知记录保存在 `state.json` 的 `notification_episodes`；只有连续不可用 30 分钟后
+才会重新武装。自部署实例可用 `NOTIFICATION_REARM_SECONDS` 调整该窗口。
+
 ### 🔗 可选：HKID ReleaseSignal bridge
 
 自部署实例可以在检测到 `newly_available` 后，向 `hkid-appointment-monitor`

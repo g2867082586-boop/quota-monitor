@@ -27,6 +27,7 @@ from quota_monitor.notify import (
     send_feishu_webhook,
     send_wecom_webhook,
 )
+from quota_monitor.notification_state import filter_repeat_releases
 from quota_monitor.release_sink import build_release_signal, deliver_outbox
 from quota_monitor.state import load_state
 
@@ -46,6 +47,8 @@ HONG_KONG_TZ = timezone(timedelta(hours=8))
 DEFAULT_POLL_INTERVAL_SECONDS = 30
 MAX_POLL_INTERVAL_SECONDS = 60
 MAX_POLL_ITERATIONS = 2
+DEFAULT_NOTIFICATION_REARM_SECONDS = 1800
+MAX_NOTIFICATION_REARM_SECONDS = 86400
 
 
 def _wecom_webhook_urls():
@@ -338,6 +341,13 @@ def _run_poll_cycle(log_no_change=True):
     is_first_run = not old_snapshot
 
     changes = detect_changes(old_snapshot, snapshot)
+    notification_episodes = state.get("notification_episodes", {})
+    changes, notification_episodes = filter_repeat_releases(
+        changes,
+        snapshot,
+        notification_episodes,
+        rearm_seconds=_notification_rearm_seconds(),
+    )
 
     # ReleaseSignal carries public quota rows only. It is a wake-up hint; the
     # receiving project independently rechecks the official source.
@@ -502,7 +512,10 @@ def _run_poll_cycle(log_no_change=True):
     _save_state_remote(
         "state.json",
         snapshot,
-        state_extra={"pending_release_signals": pending_release_signals},
+        state_extra={
+            "pending_release_signals": pending_release_signals,
+            "notification_episodes": notification_episodes,
+        },
     )
 
     logger.info("本轮配额检查完成")
@@ -543,6 +556,32 @@ def _poll_settings():
         interval_seconds = DEFAULT_POLL_INTERVAL_SECONDS
 
     return iterations, interval_seconds
+
+
+def _notification_rearm_seconds():
+    """Return the continuous-unavailability window required before re-alerting."""
+
+    try:
+        seconds = int(
+            os.environ.get(
+                "NOTIFICATION_REARM_SECONDS",
+                str(DEFAULT_NOTIFICATION_REARM_SECONDS),
+            )
+        )
+    except ValueError:
+        seconds = DEFAULT_NOTIFICATION_REARM_SECONDS
+        logger.warning(
+            "NOTIFICATION_REARM_SECONDS invalid; using %d",
+            DEFAULT_NOTIFICATION_REARM_SECONDS,
+        )
+    if not 0 <= seconds <= MAX_NOTIFICATION_REARM_SECONDS:
+        logger.warning(
+            "NOTIFICATION_REARM_SECONDS must be between 0 and %d; using %d",
+            MAX_NOTIFICATION_REARM_SECONDS,
+            DEFAULT_NOTIFICATION_REARM_SECONDS,
+        )
+        seconds = DEFAULT_NOTIFICATION_REARM_SECONDS
+    return seconds
 
 
 def main():

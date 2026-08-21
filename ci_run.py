@@ -7,7 +7,7 @@ import os
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 # 确保模块可导入
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -39,6 +39,9 @@ logger = logging.getLogger("ci_run")
 
 NOTIFY_LOG = "data/notify_log.json"
 RUN_LOG = "data/run.log"
+RELEASE_LOG = "data/release_log.json"
+RELEASE_LOG_MAX_EVENTS = 2000
+HONG_KONG_TZ = timezone(timedelta(hours=8))
 
 
 def _wecom_webhook_urls():
@@ -48,12 +51,27 @@ def _wecom_webhook_urls():
     return list(dict.fromkeys(item for item in urls if item))
 
 
+def _format_wecom_message(message):
+    """替换本仓库看板链接，并移除“加群方式”及其后的推广信息。"""
+    message = message.replace(
+        "https://Zheyi-D.github.io/quota-monitor",
+        "https://g2867082586-boop.github.io/quota-monitor/",
+    )
+    kept_lines = []
+    for line in message.splitlines():
+        if line.lstrip().startswith("📖 加群方式"):
+            break
+        kept_lines.append(line)
+    return "\n".join(kept_lines).rstrip()
+
+
 def _send_wecom_broadcast(message):
     """并行发送企业微信群通知，返回 (状态, 目标群数)。"""
     webhook_urls = _wecom_webhook_urls()
     if not webhook_urls:
         return "skipped", 0
 
+    message = _format_wecom_message(message)
     succeeded = 0
     with ThreadPoolExecutor(max_workers=min(len(webhook_urls), 5)) as pool:
         futures = {
@@ -124,6 +142,58 @@ def _append_run_log(line):
                 f.write(new_line)
         except Exception:
             pass
+
+
+def _record_release_event(newly_available, path=RELEASE_LOG, now=None):
+    """将本仓库捕获的放号事件写入独立 JSON，供实时看板使用。"""
+    if not newly_available:
+        return None
+
+    event_time = now or datetime.now(HONG_KONG_TZ).replace(microsecond=0).isoformat()
+    data = {
+        "version": 1,
+        "monitoring_since": event_time,
+        "events": [],
+    }
+
+    try:
+        with open(path, encoding="utf-8") as handle:
+            loaded = json.load(handle)
+        if isinstance(loaded, dict):
+            data.update(loaded)
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        logger.warning("放号历史不存在或损坏，将从当前事件重新建立")
+
+    if not isinstance(data.get("events"), list):
+        data["events"] = []
+    if not data.get("monitoring_since"):
+        data["monitoring_since"] = event_time
+
+    event = {
+        "time": event_time,
+        "count": len(newly_available),
+        "items": [
+            {
+                "date": date,
+                "office": office,
+                "quota_type": quota_type,
+                "status": new_status,
+            }
+            for (date, office, quota_type), _old_status, new_status in newly_available
+        ],
+    }
+    data["version"] = 1
+    data["events"].append(event)
+    data["events"] = data["events"][-RELEASE_LOG_MAX_EVENTS:]
+
+    directory = os.path.dirname(path)
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+    temporary_path = path + ".tmp"
+    with open(temporary_path, "w", encoding="utf-8") as handle:
+        json.dump(data, handle, ensure_ascii=False, indent=2)
+    os.replace(temporary_path, path)
+    return event
 
 
 def _save_state_remote(state_file, snapshot, state_extra=None):
@@ -315,6 +385,7 @@ def main():
         logger.info("检测到配额变化！")
         print(message)
         _append_run_log(f"ALERT | 新配额放出: {len(changes.get('newly_available',[]))} 个")
+        _record_release_event(changes.get("newly_available", []))
 
         # Feishu 群聊广播（支持多群：逗号分隔 chat_id）
         app_id = os.environ.get("FEISHU_APP_ID", "")
@@ -446,7 +517,7 @@ def main():
 
 # ─── URL Constants (used by DM) ───────────────────────────────────
 
-DASHBOARD_URL = "https://Zheyi-D.github.io/quota-monitor"
+DASHBOARD_URL = "https://g2867082586-boop.github.io/quota-monitor/"
 BOOKING_URL = "https://www.gov.hk/sc/apps/immdicbooking2.htm"
 
 

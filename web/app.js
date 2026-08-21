@@ -33,8 +33,18 @@ const SUBSCRIBE_URL = "https://quota-monitor.deng-zheyi.workers.dev/api/subscrib
 
 let quotaData = null;       // { "MM/DD/YYYY|OFFICE|R": "quota-g", ... }
 let allDates = [];           // sorted unique dates
+const DATA_REFRESH_INTERVAL_MS = 2 * 60 * 1000;
 
 // ─── Load Data ────────────────────────────────────────────────
+
+function cacheBustedUrl(url) {
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}v=${Date.now()}`;
+}
+
+function fetchFresh(url) {
+  return fetch(cacheBustedUrl(url), { cache: "no-store" });
+}
 
 async function loadData() {
   const urls = [
@@ -45,7 +55,7 @@ async function loadData() {
 
   for (const url of urls) {
     try {
-      const resp = await fetch(url);
+      const resp = await fetchFresh(url);
       if (resp.ok) {
         const raw = await resp.json();
         quotaData = raw;
@@ -68,7 +78,7 @@ async function loadUpdateTime() {
   const urls = ["data/last_update.json", "../data/last_update.json", "./data/last_update.json"];
   for (const url of urls) {
     try {
-      const resp = await fetch(url, { cache: "no-cache" });
+      const resp = await fetchFresh(url);
       if (resp.ok) {
         const d = await resp.json();
         if (d.time) return d.time;
@@ -297,15 +307,16 @@ async function init() {
     if (e.key === "Enter") handleSubscribe();
   });
 
-  // Auto-refresh every 5 minutes
+  // 与后端检测频率一致，每 2 分钟绕过 Pages CDN 缓存刷新数据。
   setInterval(async () => {
     try {
       await loadData();
       render();
+      if (window._trendLoaded) await refreshTrend();
     } catch (_) { /* silent on auto-refresh */ }
     document.getElementById("updateTime").textContent =
       "更新時間：" + await loadUpdateTime();
-  }, 5 * 60 * 1000);
+  }, DATA_REFRESH_INTERVAL_MS);
 }
 
 init();
@@ -333,34 +344,45 @@ const HOURS_TREND = (() => { const a = []; for (let h = 8; h <= 23; h++) a.push(
 const DAYS_TREND = ["日","一","二","三","四","五","六"];
 
 let batchesTrend = [];
+let monitoringSinceTrend = null;
+let selectedTrendPeriod = 7;
 
-async function initTrend() {
+async function loadTrendData() {
+  batchesTrend = [];
+  monitoringSinceTrend = null;
   try {
-    // Parse run.log: "[2026-07-31 11:24:30 BJT] ALERT | 新配额放出: 8 个"
-    const resp = await fetch("data/run.log");
+    const resp = await fetchFresh("data/release_log.json");
     if (resp.ok) {
-      const text = await resp.text();
-      const re = /\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) BJT\] ALERT \| 新配额放出: (\d+) 个/g;
-      let m;
-      while ((m = re.exec(text)) !== null) {
-        batchesTrend.push({
-          t: new Date(m[1] + "+08:00"),
-          count: parseInt(m[2]),
-          dates: []  // run.log doesn't store individual dates, not needed for heatmap
-        });
-      }
+      const data = await resp.json();
+      if (data.monitoring_since) monitoringSinceTrend = new Date(data.monitoring_since);
+      const events = Array.isArray(data.events) ? data.events : [];
+      batchesTrend = events
+        .map(event => ({
+          t: new Date(event.time),
+          count: Number(event.count) || 0,
+          dates: Array.isArray(event.items) ? event.items.map(item => item.date) : [],
+        }))
+        .filter(event => !Number.isNaN(event.t.getTime()) && event.count > 0);
       batchesTrend.sort((a, b) => b.t - a.t);
     }
   } catch (_) { /* file may not exist yet */ }
+}
 
+async function refreshTrend() {
+  await loadTrendData();
   updateCountdown();
+  renderHeatmap(selectedTrendPeriod);
+}
+
+async function initTrend() {
+  await refreshTrend();
   setInterval(updateCountdown, 60000);
-  renderHeatmap(7);
 
   document.querySelectorAll(".pill").forEach(b => b.addEventListener("click", () => {
     document.querySelectorAll(".pill").forEach(x => x.classList.remove("on"));
     b.classList.add("on");
-    renderHeatmap(+b.dataset.period);
+    selectedTrendPeriod = +b.dataset.period;
+    renderHeatmap(selectedTrendPeriod);
   }));
 }
 
@@ -376,8 +398,16 @@ function fmtTrendTime(ts) {
 }
 
 function updateCountdown() {
-  document.getElementById("tcVal").textContent =
-    batchesTrend.length > 0 ? fmtTrendTime(batchesTrend[0].t) : "暂无记录";
+  const value = document.getElementById("tcVal");
+  const meta = document.getElementById("tcMeta");
+  value.textContent = batchesTrend.length > 0 ? fmtTrendTime(batchesTrend[0].t) : "暂无记录";
+  if (batchesTrend.length > 0) {
+    meta.textContent = `本仓库已记录 ${batchesTrend.length} 个放号批次`;
+  } else if (monitoringSinceTrend && !Number.isNaN(monitoringSinceTrend.getTime())) {
+    meta.textContent = `自 ${fmtTrendTime(monitoringSinceTrend)} 开始监控`;
+  } else {
+    meta.textContent = "等待本仓库捕获首次放号";
+  }
 }
 
 function fmtDate(ts) {
@@ -389,6 +419,7 @@ function renderHeatmap(pd) {
   const N = HOURS_TREND.length;
   if (batchesTrend.length === 0) {
     document.getElementById("tmHead").innerHTML = "";
+    document.getElementById("top3List").innerHTML = '<li style="color:var(--text2)">暂无数据</li>';
     document.getElementById("tmBody").innerHTML = `<tr><td colspan="${N+1}" style="text-align:center;padding:48px 16px;color:var(--text2);font-size:0.9rem">📊 数据收集中，放号规律将在检测到配额变化后自动生成<br><small style="color:var(--text2);opacity:0.7">系统每 2 分钟扫描一次（08:00-24:00）</small></td></tr>`;
     return;
   }

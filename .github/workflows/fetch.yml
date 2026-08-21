@@ -1,5 +1,5 @@
 name: Fetch Quota & Notify
-# 每 2 分钟自动抓取配额并通知
+# 外部每分钟触发一次；自动任务会在 30 秒间隔内检查两次。
 
 on:
   workflow_dispatch:
@@ -19,6 +19,7 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 4
     permissions:
       contents: write
       pages: write
@@ -44,6 +45,8 @@ jobs:
           FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID }}
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           WECOM_TEST_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.test_wecom && '1' || '0' }}
+          POLL_ITERATIONS: ${{ github.event_name == 'repository_dispatch' && '2' || '1' }}
+          POLL_INTERVAL_SECONDS: "30"
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           HKID_RELEASE_WEBHOOK_URL: ${{ secrets.HKID_RELEASE_WEBHOOK_URL }}
           HKID_RELEASE_WEBHOOK_SECRET: ${{ secrets.HKID_RELEASE_WEBHOOK_SECRET }}

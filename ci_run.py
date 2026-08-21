@@ -6,6 +6,7 @@ import logging
 import os
 import subprocess
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 
@@ -42,6 +43,9 @@ RUN_LOG = "data/run.log"
 RELEASE_LOG = "data/release_log.json"
 RELEASE_LOG_MAX_EVENTS = 2000
 HONG_KONG_TZ = timezone(timedelta(hours=8))
+DEFAULT_POLL_INTERVAL_SECONDS = 30
+MAX_POLL_INTERVAL_SECONDS = 60
+MAX_POLL_ITERATIONS = 2
 
 
 def _wecom_webhook_urls():
@@ -307,20 +311,8 @@ def _append_notify_log(entry):
         json.dump(logs, f, ensure_ascii=False, indent=2)
 
 
-def main():
-    logger.info("CI Run — %s", datetime.now().isoformat())
-
-    # workflow_dispatch 可只测试企业微信，不抓取或改写配额状态。
-    if os.environ.get("WECOM_TEST_ONLY", "").lower() in ("1", "true", "yes"):
-        status, target_count = _send_wecom_broadcast(
-            "企业微信群机器人连接测试成功。\n\n"
-            "如果你看到了这条消息，GitHub Actions Secret 已配置正确。"
-        )
-        logger.info("企业微信测试通知: %s (%d群)", status, target_count)
-        if status != "OK":
-            sys.exit(1)
-        return
-
+def _run_poll_cycle(log_no_change=True):
+    """执行一次配额检查；中间轮询可省略无变化日志以减少 API 写入。"""
     # ── 1. 拉取 API ──
     logger.info("拉取配额数据...")
     snapshot = fetch_snapshot()
@@ -472,12 +464,13 @@ def main():
 
     else:
         logger.info("配额状态无变化")
-        _append_run_log("OK | 配额状态无变化")
-        _append_notify_log({
-            "time": datetime.now().isoformat(),
-            "event": "no_change",
-            "summary": "无变化"
-        })
+        if log_no_change:
+            _append_run_log("OK | 配额状态无变化")
+            _append_notify_log({
+                "time": datetime.now().isoformat(),
+                "event": "no_change",
+                "summary": "无变化"
+            })
 
     # ── 5. 投递无 PII ReleaseSignal outbox；失败不影响飞书通知或快照更新 ──
     if pending_release_signals and release_url and release_secret:
@@ -511,6 +504,68 @@ def main():
         snapshot,
         state_extra={"pending_release_signals": pending_release_signals},
     )
+
+    logger.info("本轮配额检查完成")
+
+
+def _poll_settings():
+    """读取并校验轮询设置，限制为一次任务最多检查两次。"""
+    try:
+        iterations = int(os.environ.get("POLL_ITERATIONS", "1"))
+    except ValueError:
+        iterations = 1
+        logger.warning("POLL_ITERATIONS 无效，回退为 1")
+    if not 1 <= iterations <= MAX_POLL_ITERATIONS:
+        logger.warning(
+            "POLL_ITERATIONS 必须在 1-%d 之间，回退为 1",
+            MAX_POLL_ITERATIONS,
+        )
+        iterations = 1
+
+    try:
+        interval_seconds = int(
+            os.environ.get(
+                "POLL_INTERVAL_SECONDS", str(DEFAULT_POLL_INTERVAL_SECONDS)
+            )
+        )
+    except ValueError:
+        interval_seconds = DEFAULT_POLL_INTERVAL_SECONDS
+        logger.warning(
+            "POLL_INTERVAL_SECONDS 无效，回退为 %d",
+            DEFAULT_POLL_INTERVAL_SECONDS,
+        )
+    if not 0 <= interval_seconds <= MAX_POLL_INTERVAL_SECONDS:
+        logger.warning(
+            "POLL_INTERVAL_SECONDS 必须在 0-%d 之间，回退为 %d",
+            MAX_POLL_INTERVAL_SECONDS,
+            DEFAULT_POLL_INTERVAL_SECONDS,
+        )
+        interval_seconds = DEFAULT_POLL_INTERVAL_SECONDS
+
+    return iterations, interval_seconds
+
+
+def main():
+    logger.info("CI Run — %s", datetime.now().isoformat())
+
+    # workflow_dispatch 可只测试企业微信，不抓取或改写配额状态。
+    if os.environ.get("WECOM_TEST_ONLY", "").lower() in ("1", "true", "yes"):
+        status, target_count = _send_wecom_broadcast(
+            "企业微信群机器人连接测试成功。\n\n"
+            "如果你看到了这条消息，GitHub Actions Secret 已配置正确。"
+        )
+        logger.info("企业微信测试通知: %s (%d群)", status, target_count)
+        if status != "OK":
+            sys.exit(1)
+        return
+
+    iterations, interval_seconds = _poll_settings()
+    for index in range(iterations):
+        logger.info("开始配额检查 %d/%d", index + 1, iterations)
+        _run_poll_cycle(log_no_change=index == iterations - 1)
+        if index < iterations - 1:
+            logger.info("等待 %d 秒后进行下一次检查", interval_seconds)
+            time.sleep(interval_seconds)
 
     logger.info("CI Run 完成")
 

@@ -3,8 +3,18 @@ name: Fetch Quota & Notify
 
 on:
   workflow_dispatch:
+    inputs:
+      test_wecom:
+        description: "仅发送一条企业微信测试通知（不抓取、不更新状态）"
+        required: false
+        default: false
+        type: boolean
   repository_dispatch:
     types: [fetch-quota]
+
+concurrency:
+  group: fetch-quota
+  cancel-in-progress: false
 
 jobs:
   fetch:
@@ -32,6 +42,8 @@ jobs:
           FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
           FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID }}
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+          WECOM_TEST_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.test_wecom && '1' || '0' }}
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           HKID_RELEASE_WEBHOOK_URL: ${{ secrets.HKID_RELEASE_WEBHOOK_URL }}
           HKID_RELEASE_WEBHOOK_SECRET: ${{ secrets.HKID_RELEASE_WEBHOOK_SECRET }}

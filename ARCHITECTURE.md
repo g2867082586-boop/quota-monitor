@@ -24,7 +24,7 @@ pip install -e .
 
 ```bash
 cp config.example.json config.json
-# 编辑 config.json，填入飞书应用凭据或 webhook URL
+# 编辑 config.json，填入飞书或企业微信群机器人配置
 ```
 
 ### 运行
@@ -50,13 +50,27 @@ python ci_run.py
 | `FEISHU_APP_ID` | 飞书自建应用 App ID | 是（飞书） |
 | `FEISHU_APP_SECRET` | 飞书自建应用 App Secret | 是（飞书） |
 | `FEISHU_CHAT_ID` | 目标群聊 chat_id（支持逗号分隔多群） | 是（飞书） |
-| `ENCRYPTION_KEY` | AES-256 加密密钥 | 是（加密） |
+| `WECOM_WEBHOOK_URL` | 企业微信群机器人完整 Webhook；逗号/换行分隔多群 | 是（企业微信） |
+| `ENCRYPTION_KEY` | AES-256 加密密钥 | 是（飞书 DM 加密） |
 
-3. 部署 Cloudflare Worker（`workers/subscribe.js`），用于飞书 DM 订阅 API + 管理后台 API + 管理员群发
-4. Settings → Pages → Source: GitHub Actions
-5. 配置 cron-job.org 定时触发：
-   - `fetch-quota`：每 2 分钟 POST（08:00-24:00）
-   - `feishu-ws`：每 5 小时 POST（维持长连接）
+3. 确认 Actions 已启用，并将工作流合并到默认分支。
+4. Actions → `Fetch Quota & Notify` → Run workflow，勾选 `test_wecom` 验证企业微信；
+   此模式不抓取、不更新 `state.json`。
+5. 可选：部署 Cloudflare Worker（`workers/subscribe.js`），用于飞书 DM 订阅 API + 管理后台 API + 管理员群发。
+6. 可选：Settings → Pages → Source: GitHub Actions。
+7. 配置 cron-job.org 或自己的定时服务每 2 分钟 POST：
+
+   ```text
+   https://api.github.com/repos/<OWNER>/quota-monitor/dispatches
+   Authorization: Bearer <仅此仓库 Contents: Read and write 的 fine-grained PAT>
+   Accept: application/vnd.github+json
+   Content-Type: application/json
+
+   {"event_type":"fetch-quota"}
+   ```
+
+   GitHub 原生 `schedule` 最短为 5 分钟且可能排队；外部触发器只是按时唤醒 Actions，
+   真正的抓取、差异判断和通知仍由仓库代码完成。
 
 ### Cloudflare Worker
 
@@ -100,7 +114,7 @@ Admin 后台已改为 **HMAC-SHA256 Token 认证**：
 quota-monitor/
 ├── quota_monitor/          # Python 核心库
 │   ├── core.py             # API 拉取 + 变化检测
-│   ├── notify.py           # 飞书群聊 + 私聊通知
+│   ├── notify.py           # 飞书 + 企业微信群通知
 │   ├── state.py            # 状态持久化
 │   └── monitor.py          # CLI 入口
 ├── ci_run.py               # CI 入口（配额检测 + 群聊/DM 通知）
@@ -131,13 +145,14 @@ quota-monitor/
 ## 🏗 数据流
 
 ```
-cron-job.org
-  ├── 每 2 分钟 POST fetch-quota（08:00-24:00）
+cron-job.org（每 2 分钟）
+  ├── 触发 fetch-quota（08:00-24:00）
   │     ↓
   │   GitHub Actions (ci_run.py)
   │     ├── fetch_snapshot() → 入境处公开 API
   │     ├── detect_changes() — 对比快照，检测 newly_available
   │     ├── 飞书群聊广播 → ThreadPoolExecutor 并行（多群逗号分隔）
+  │     ├── 企业微信群广播 → Webhook Markdown（超长自动分片）
   │     ├── 飞书私聊 DM → ThreadPoolExecutor 并行（最多 5 并发）
   │     │     └── 读 feishu_subs.json → 匹配日期 → 逐人发送
   │     ├── state.json → GitHub API 直写
@@ -181,6 +196,7 @@ cron-job.org
 | `core.py` | `export_web_data()` | 导出 `data/quota.json` 供前端读取 |
 | `notify.py` | `send_feishu_api()` | 飞书 Open API：获取 token → POST 消息卡片到群聊 |
 | `notify.py` | `send_feishu_dm()` | 飞书 Open API：获取 token → POST 消息卡片到私聊 (receive_id_type=open_id) |
+| `notify.py` | `send_wecom_webhook()` | 企业微信群机器人：POST Markdown，按 4096 UTF-8 字节分片 |
 | `state.py` | `load_state()` / `save_state()` | 快照持久化，原子写入防损坏 |
 | `ci_run.py` | `_save_state_remote()` | GitHub API 直写 state.json，避免 push 不可靠 |
 | `ci_run.py` | `_append_run_log()` | GitHub API 追加 CI 日志到 `data/run.log`（上限 10000 行） |
@@ -193,10 +209,13 @@ CI 检测到 `newly_available` 后，按以下顺序并行化推送：
 ```
 detect_changes() → has_significant_change() → format_changes()
 
-  ├─ 1. 飞书群聊广播 → ThreadPoolExecutor 并行发送（多群同时，逗号分隔 FEISHU_CHAT_ID）
+  ├─ 飞书群聊广播 → ThreadPoolExecutor 并行发送（多群同时，逗号分隔 FEISHU_CHAT_ID）
   │    └─ send_feishu_api() → receive_id_type=chat_id, msg_type=interactive
 
-  └─ 2. 飞书私聊 DM → ThreadPoolExecutor 并行发送（最多 5 并发）
+  ├─ 企业微信群广播 → ThreadPoolExecutor 并行发送（逗号/换行分隔 WECOM_WEBHOOK_URL）
+  │    └─ send_wecom_webhook() → msgtype=markdown
+
+  └─ 飞书私聊 DM → ThreadPoolExecutor 并行发送（最多 5 并发）
        ├─ 读 data/feishu_subs.json → 提取 released_dates
        ├─ 遍历订阅者 → dates=[] 全量匹配 或 dates 与 released_dates 交集
        └─ send_feishu_dm() → receive_id_type=open_id, msg_type=interactive
@@ -204,6 +223,8 @@ detect_changes() → has_significant_change() → format_changes()
 
 **设计要点**：
 - 群聊和 DM 各自使用 `ThreadPoolExecutor` 并行，几乎同时抵达
+- 飞书与企业微信彼此独立，任一通道未配置或失败不会阻止其他通道
+- 企业微信 Webhook 只允许官方 HTTPS 地址，Markdown 超过 4096 字节自动分片
 - 单个群/DM 发送失败不中止其余发送
 - 可选 ReleaseSignal 与飞书发送互不决定成败；它只发送公开 `newly_available` 行
 - ReleaseSignal 接收端必须独立复核官网，不能直接用事件创建预约 Candidate
@@ -331,8 +352,8 @@ CI 检测到 `newly_available` 变化时，通过 GitHub API 追加到 `data/run
 
 | 环境 | 用途 |
 |------|------|
-| GitHub Actions (Ubuntu) | fetch-quota: 配额检测 + 群聊/DM 通知 + 数据导出 + Pages 后备部署 |
+| GitHub Actions (Ubuntu) | fetch-quota: 配额检测 + 飞书/企业微信通知 + 数据导出 + Pages 后备部署 |
 | GitHub Actions (Ubuntu) | feishu-ws: 飞书长连接客户端，每 5 小时启动，接收私聊消息 |
 | Cloudflare Workers | 飞书 DM API/管理后台 API/群发：接收请求 → 调 GitHub API 读写文件 |
-| cron-job.org | 外部定时触发器，每 2 分钟 POST fetch-quota（08:00-24:00）+ 每 5 小时 POST feishu-ws |
+| cron-job.org | 外部定时触发器，每 2 分钟 POST fetch-quota；如仍使用飞书长连接，再每 5 小时 POST feishu-ws |
 | 本地 Python CLI | 开发者调试：`python monitor.py --once` |

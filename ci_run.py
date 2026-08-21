@@ -20,7 +20,12 @@ from quota_monitor.core import (
     format_changes,
     has_significant_change,
 )
-from quota_monitor.notify import send_feishu_api, send_feishu_dm, send_feishu_webhook
+from quota_monitor.notify import (
+    send_feishu_api,
+    send_feishu_dm,
+    send_feishu_webhook,
+    send_wecom_webhook,
+)
 from quota_monitor.release_sink import build_release_signal, deliver_outbox
 from quota_monitor.state import load_state
 
@@ -34,6 +39,36 @@ logger = logging.getLogger("ci_run")
 
 NOTIFY_LOG = "data/notify_log.json"
 RUN_LOG = "data/run.log"
+
+
+def _wecom_webhook_urls():
+    """读取企业微信 Webhook；支持用逗号或换行分隔多个群。"""
+    raw = os.environ.get("WECOM_WEBHOOK_URL", "")
+    urls = [item.strip() for item in raw.replace("\r", "\n").replace("\n", ",").split(",")]
+    return list(dict.fromkeys(item for item in urls if item))
+
+
+def _send_wecom_broadcast(message):
+    """并行发送企业微信群通知，返回 (状态, 目标群数)。"""
+    webhook_urls = _wecom_webhook_urls()
+    if not webhook_urls:
+        return "skipped", 0
+
+    succeeded = 0
+    with ThreadPoolExecutor(max_workers=min(len(webhook_urls), 5)) as pool:
+        futures = {
+            pool.submit(send_wecom_webhook, url, message): url
+            for url in webhook_urls
+        }
+        for future in as_completed(futures):
+            if future.result():
+                succeeded += 1
+
+    if succeeded == len(webhook_urls):
+        return "OK", len(webhook_urls)
+    if succeeded:
+        return "PARTIAL", len(webhook_urls)
+    return "FAIL", len(webhook_urls)
 
 
 def _append_run_log(line):
@@ -205,6 +240,17 @@ def _append_notify_log(entry):
 def main():
     logger.info("CI Run — %s", datetime.now().isoformat())
 
+    # workflow_dispatch 可只测试企业微信，不抓取或改写配额状态。
+    if os.environ.get("WECOM_TEST_ONLY", "").lower() in ("1", "true", "yes"):
+        status, target_count = _send_wecom_broadcast(
+            "企业微信群机器人连接测试成功。\n\n"
+            "如果你看到了这条消息，GitHub Actions Secret 已配置正确。"
+        )
+        logger.info("企业微信测试通知: %s (%d群)", status, target_count)
+        if status != "OK":
+            sys.exit(1)
+        return
+
     # ── 1. 拉取 API ──
     logger.info("拉取配额数据...")
     snapshot = fetch_snapshot()
@@ -255,7 +301,7 @@ def main():
             pending_release_signals.append(signal)
 
     # ── 4. 发送通知 ──
-    notify_result = {"feishu": None, "feishu_dm": 0}
+    notify_result = {"feishu": None, "feishu_dm": 0, "wecom": None}
     if is_first_run:
         logger.info("首次运行，基准快照已建立，不发送通知")
         _append_run_log("INIT | 首次运行，基准快照已建立")
@@ -290,6 +336,11 @@ def main():
             logger.info("飞书通知: %s", notify_result["feishu"])
         else:
             notify_result["feishu"] = "skipped"
+
+        # 企业微信群机器人广播（与飞书配置相互独立）
+        wecom_status, wecom_target_count = _send_wecom_broadcast(message)
+        notify_result["wecom"] = wecom_status
+        logger.info("企业微信群通知: %s (%d群)", wecom_status, wecom_target_count)
 
         # Feishu DM 按日期过滤通知（在邮件之前，避免被慢速SMTP阻塞）
         if app_id and app_secret:
@@ -344,6 +395,7 @@ def main():
             "changes": len(changes.get("newly_available", [])),
             "feishu": notify_result["feishu"],
             "feishu_dm": notify_result.get("feishu_dm", 0),
+            "wecom": notify_result["wecom"],
             "summary": f"配额变化: {len(changes.get('newly_available',[]))} 个日期"
         })
 

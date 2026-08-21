@@ -27,6 +27,10 @@
       "webhook_url": "",
       "min_interval_minutes": 10
     },
+    "wecom": {
+      "enabled": false,
+      "webhook_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=YOUR_BOT_KEY"
+    },
     "email": {
       "enabled": false,
       "smtp_username": "your-qq-email@qq.com",

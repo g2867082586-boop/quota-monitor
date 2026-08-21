@@ -1,7 +1,8 @@
-"""通知模块 — 飞书群聊 + 私聊通知。
+"""通知模块 — 飞书与企业微信群通知。
 
 在 CI (GitHub Actions) 中通过环境变量获取配置：
   - FEISHU_APP_ID / FEISHU_APP_SECRET / FEISHU_CHAT_ID: 飞书自建应用
+  - WECOM_WEBHOOK_URL: 企业微信群机器人 Webhook URL
 
 本地运行时通过 config.json 配置。
 """
@@ -9,10 +10,127 @@
 import json
 import logging
 import os
+from urllib.parse import parse_qs, urlsplit
 
 import requests
 
 logger = logging.getLogger("quota_monitor")
+
+
+# ─── 企业微信通知 ────────────────────────────────────────────────
+
+WECOM_WEBHOOK_HOST = "qyapi.weixin.qq.com"
+WECOM_WEBHOOK_PATH = "/cgi-bin/webhook/send"
+WECOM_MARKDOWN_MAX_BYTES = 4096
+
+
+def _split_utf8(text, max_bytes):
+    """按 UTF-8 字节数拆分文本，不截断多字节字符。"""
+    if max_bytes <= 0:
+        raise ValueError("max_bytes 必须大于 0")
+
+    chunks = []
+    current = ""
+    for line in text.splitlines(keepends=True):
+        while line:
+            remaining = max_bytes - len(current.encode("utf-8"))
+            if remaining <= 0:
+                chunks.append(current.rstrip("\n"))
+                current = ""
+                remaining = max_bytes
+
+            if len(line.encode("utf-8")) <= remaining:
+                current += line
+                break
+
+            if current:
+                chunks.append(current.rstrip("\n"))
+                current = ""
+                continue
+
+            encoded = line.encode("utf-8")
+            cut = min(max_bytes, len(encoded))
+            while cut > 0 and cut < len(encoded) and (encoded[cut] & 0xC0) == 0x80:
+                cut -= 1
+            if cut == 0:
+                raise ValueError("max_bytes 小于单个 UTF-8 字符")
+            chunks.append(encoded[:cut].decode("utf-8").rstrip("\n"))
+            line = encoded[cut:].decode("utf-8")
+
+    if current or not chunks:
+        chunks.append(current.rstrip("\n"))
+    return chunks
+
+
+def _validate_wecom_webhook_url(webhook_url):
+    """只允许企业微信官方 HTTPS 群机器人地址，避免误发 Secret。"""
+    parsed = urlsplit(webhook_url)
+    return (
+        parsed.scheme == "https"
+        and parsed.hostname == WECOM_WEBHOOK_HOST
+        and parsed.path == WECOM_WEBHOOK_PATH
+        and bool(parse_qs(parsed.query).get("key"))
+    )
+
+
+def send_wecom_webhook(webhook_url, text, title="香港入境处预约配额监控"):
+    """通过企业微信群机器人发送 Markdown 通知。
+
+    企业微信单条 Markdown 最多 4096 UTF-8 字节；超长内容会按字节安全拆分，
+    每一段都会保留标题。
+
+    Returns:
+        bool: 所有分段是否均发送成功
+    """
+    if not webhook_url:
+        logger.warning("企业微信 webhook URL 未配置，跳过发送")
+        return False
+    if not _validate_wecom_webhook_url(webhook_url):
+        logger.error("企业微信 webhook URL 格式无效，必须使用官方 HTTPS 群机器人地址")
+        return False
+
+    prefix = f"## 🔔 {title}\n"
+    content_limit = WECOM_MARKDOWN_MAX_BYTES - len(prefix.encode("utf-8"))
+    chunks = _split_utf8(text, content_limit)
+
+    for index, chunk in enumerate(chunks, start=1):
+        content = prefix + chunk
+        payload = {
+            "msgtype": "markdown",
+            "markdown": {"content": content},
+        }
+        try:
+            resp = requests.post(
+                webhook_url,
+                json=payload,
+                timeout=15,
+                allow_redirects=False,
+            )
+        except requests.Timeout:
+            logger.error("企业微信 webhook 请求超时 (分段 %d/%d)", index, len(chunks))
+            return False
+        except requests.RequestException as exc:
+            logger.error("企业微信 webhook 请求失败 (分段 %d/%d): %s",
+                         index, len(chunks), exc)
+            return False
+
+        if resp.status_code != 200:
+            logger.error("企业微信 webhook HTTP %d (分段 %d/%d)",
+                         resp.status_code, index, len(chunks))
+            return False
+        try:
+            body = resp.json()
+        except ValueError:
+            logger.error("企业微信 webhook 返回了无效 JSON (分段 %d/%d)",
+                         index, len(chunks))
+            return False
+        if body.get("errcode") != 0:
+            logger.error("企业微信 API 返回错误: errcode=%s errmsg=%s",
+                         body.get("errcode"), body.get("errmsg"))
+            return False
+
+    logger.info("企业微信群通知发送成功 (%d 条)", len(chunks))
+    return True
 
 
 # ─── 飞书通知 ────────────────────────────────────────────────────
@@ -238,7 +356,7 @@ def send_feishu_webhook(webhook_url, text, title="🔔 香港入境处预约配�
 # ─── 统一发送接口 ───────────────────────────────────────────────────
 
 def send_notifications(text, config=None):
-    """统一发送飞书通知。邮件功能已下架。
+    """统一发送飞书与企业微信群通知。邮件功能已下架。
 
     飞书支持两种模式：
       - API 模式：自建应用，需要 APP_ID + APP_SECRET + CHAT_ID
@@ -246,16 +364,16 @@ def send_notifications(text, config=None):
       API 模式优先。
 
     Args:
-        text: 飞书消息正文
+        text: Markdown 消息正文
         config: 通知配置 dict，为 None 时从环境变量读取（CI 模式）
 
     Returns:
-        dict: {"feishu": bool}
+        dict: {"feishu": bool, "wecom": bool}
     """
     if config is None:
         config = _ci_config()
 
-    result = {"feishu": False}
+    result = {"feishu": False, "wecom": False}
 
     # ── 飞书通知 ──
     feishu_cfg = config.get("feishu", {})
@@ -271,6 +389,13 @@ def send_notifications(text, config=None):
         elif webhook_url:
             result["feishu"] = send_feishu_webhook(webhook_url, text)
 
+    # ── 企业微信群通知 ──
+    wecom_cfg = config.get("wecom", {})
+    if wecom_cfg.get("enabled", False):
+        wecom_url = wecom_cfg.get("webhook_url", "")
+        if wecom_url:
+            result["wecom"] = send_wecom_webhook(wecom_url, text)
+
     return result
 
 
@@ -280,6 +405,7 @@ def _ci_config():
     飞书支持两种方式：
       - FEISHU_APP_ID + FEISHU_APP_SECRET + FEISHU_CHAT_ID → API 模式（自建应用）
       - FEISHU_WEBHOOK_URL → Webhook 模式（群自定义机器人）
+    企业微信使用 WECOM_WEBHOOK_URL → 群机器人 Webhook。
     """
     config = {
         "feishu": {
@@ -287,6 +413,10 @@ def _ci_config():
             "app_id": "",
             "app_secret": "",
             "chat_id": "",
+            "webhook_url": "",
+        },
+        "wecom": {
+            "enabled": False,
             "webhook_url": "",
         },
     }
@@ -306,5 +436,11 @@ def _ci_config():
     if webhook_url:
         config["feishu"]["enabled"] = True
         config["feishu"]["webhook_url"] = webhook_url
+
+    # 企业微信群机器人
+    wecom_url = os.environ.get("WECOM_WEBHOOK_URL", "")
+    if wecom_url:
+        config["wecom"]["enabled"] = True
+        config["wecom"]["webhook_url"] = wecom_url
 
     return config

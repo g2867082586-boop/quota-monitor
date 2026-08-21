@@ -10,6 +10,7 @@
 
 CI 模式环境变量:
   FEISHU_WEBHOOK_URL   - 飞书群机器人 webhook URL
+  WECOM_WEBHOOK_URL    - 企业微信群机器人 webhook URL
   EMAIL_SUBSCRIBERS    - 邮件订阅者列表，JSON 数组格式
 """
 
@@ -146,8 +147,9 @@ def run_once(config, state_path="state.json"):
         safe_print("\n" + message)
         logger.info("检测到配额变化，发送通知...")
         result = send_notifications(message, notify_cfg)
-        logger.info("通知结果: 飞书=%s",
-                    "OK" if result["feishu"] else "FAIL")
+        logger.info("通知结果: 飞书=%s, 企业微信=%s",
+                    "OK" if result["feishu"] else "SKIP/FAIL",
+                    "OK" if result["wecom"] else "SKIP/FAIL")
     else:
         logger.info("配额状态无变化")
         _print_summary(new_snapshot, offices)
@@ -230,8 +232,9 @@ def run_loop(config, interval, state_path="state.json"):
                     logger.info("检测到配额变化！")
                     print("\n" + message + "\n")
                     result = send_notifications(message, notify_cfg)
-                    logger.info("通知: 飞书=%s",
-                                "OK" if result["feishu"] else "FAIL")
+                    logger.info("通知: 飞书=%s, 企业微信=%s",
+                                "OK" if result["feishu"] else "SKIP/FAIL",
+                                "OK" if result["wecom"] else "SKIP/FAIL")
                 else:
                     # 简要汇总
                     available = sum(1 for v in new_snapshot.values()
@@ -341,6 +344,10 @@ def main():
                 "feishu": {
                     "enabled": True,
                     "webhook_url": os.environ.get("FEISHU_WEBHOOK_URL", ""),
+                },
+                "wecom": {
+                    "enabled": True,
+                    "webhook_url": os.environ.get("WECOM_WEBHOOK_URL", ""),
                 },
                 "email": {
                     "enabled": True,

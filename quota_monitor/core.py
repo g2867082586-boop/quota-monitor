@@ -363,6 +363,7 @@ def _default_config():
         "date_range": {"start": None, "end": None},
         "notifications": {
             "feishu": {"enabled": False, "webhook_url": ""},
+            "wecom": {"enabled": False, "webhook_url": ""},
             "email": {"enabled": False, "subscribers": [], "min_interval_minutes": 30},
         },
         "retry": {"max_retries": 3, "backoff_base_seconds": 5},

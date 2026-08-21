@@ -1,0 +1,86 @@
+import os
+import unittest
+from unittest.mock import Mock, patch
+
+import requests
+
+from ci_run import _send_wecom_broadcast, _wecom_webhook_urls
+from quota_monitor.notify import WECOM_MARKDOWN_MAX_BYTES, send_wecom_webhook
+
+WECOM_URL = (
+    "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?"
+    "key=00000000-0000-0000-0000-000000000000"
+)
+
+
+class WecomNotifyTests(unittest.TestCase):
+    @patch("quota_monitor.notify.requests.post")
+    def test_sends_markdown_to_official_webhook(self, post):
+        post.return_value = Mock(status_code=200)
+        post.return_value.json.return_value = {"errcode": 0, "errmsg": "ok"}
+
+        self.assertTrue(send_wecom_webhook(WECOM_URL, "发现新名额"))
+
+        payload = post.call_args.kwargs["json"]
+        self.assertEqual(payload["msgtype"], "markdown")
+        self.assertIn("发现新名额", payload["markdown"]["content"])
+        self.assertEqual(post.call_args.kwargs["timeout"], 15)
+        self.assertFalse(post.call_args.kwargs["allow_redirects"])
+
+    @patch("quota_monitor.notify.requests.post")
+    def test_splits_long_unicode_content_within_wecom_limit(self, post):
+        post.return_value = Mock(status_code=200)
+        post.return_value.json.return_value = {"errcode": 0, "errmsg": "ok"}
+
+        self.assertTrue(send_wecom_webhook(WECOM_URL, "新名额一行\n" * 1000))
+
+        self.assertGreater(post.call_count, 1)
+        for call in post.call_args_list:
+            content = call.kwargs["json"]["markdown"]["content"]
+            self.assertLessEqual(len(content.encode("utf-8")), WECOM_MARKDOWN_MAX_BYTES)
+
+    @patch("quota_monitor.notify.requests.post")
+    def test_rejects_non_official_or_plain_http_url(self, post):
+        self.assertFalse(
+            send_wecom_webhook("https://example.test/hook?key=secret", "test")
+        )
+        self.assertFalse(
+            send_wecom_webhook(
+                "http://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=secret", "test"
+            )
+        )
+        post.assert_not_called()
+
+    @patch("quota_monitor.notify.requests.post")
+    def test_reports_api_error_and_timeout(self, post):
+        post.return_value = Mock(status_code=200)
+        post.return_value.json.return_value = {"errcode": 93000, "errmsg": "invalid"}
+        self.assertFalse(send_wecom_webhook(WECOM_URL, "test"))
+
+        post.side_effect = requests.Timeout()
+        self.assertFalse(send_wecom_webhook(WECOM_URL, "test"))
+
+    @patch.dict(
+        os.environ,
+        {"WECOM_WEBHOOK_URL": f"{WECOM_URL},\n{WECOM_URL}&group=second"},
+        clear=False,
+    )
+    def test_ci_parses_comma_and_newline_separated_webhooks(self):
+        self.assertEqual(
+            _wecom_webhook_urls(),
+            [WECOM_URL, f"{WECOM_URL}&group=second"],
+        )
+
+    @patch.dict(
+        os.environ,
+        {"WECOM_WEBHOOK_URL": f"{WECOM_URL},{WECOM_URL}&group=second"},
+        clear=False,
+    )
+    @patch("ci_run.send_wecom_webhook", side_effect=[True, False])
+    def test_ci_reports_partial_multi_group_delivery(self, send):
+        self.assertEqual(_send_wecom_broadcast("test"), ("PARTIAL", 2))
+        self.assertEqual(send.call_count, 2)
+
+
+if __name__ == "__main__":
+    unittest.main()

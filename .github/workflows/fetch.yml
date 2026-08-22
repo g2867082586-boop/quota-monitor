@@ -47,7 +47,9 @@ jobs:
           WECOM_TEST_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.test_wecom && '1' || '0' }}
           POLL_ITERATIONS: ${{ github.event_name == 'repository_dispatch' && '2' || '1' }}
           POLL_INTERVAL_SECONDS: "30"
-          NOTIFICATION_REARM_SECONDS: "1800"
+          # Re-arm as soon as a row becomes unavailable. A later red -> yellow
+          # transition must wake HKID again and may notify the quota group again.
+          NOTIFICATION_REARM_SECONDS: "0"
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           HKID_RELEASE_WEBHOOK_URL: ${{ secrets.HKID_RELEASE_WEBHOOK_URL }}
           HKID_RELEASE_WEBHOOK_SECRET: ${{ secrets.HKID_RELEASE_WEBHOOK_SECRET }}

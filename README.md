@@ -61,9 +61,11 @@
 
 各通道失败互不影响；企业微信超长 Markdown 会自动安全分片。
 
-同一日期、办事处和时段在官网红/黄状态快速抖动时，只在首次放号时广播。
-通知记录保存在 `state.json` 的 `notification_episodes`；只有连续不可用 30 分钟后
-才会重新武装。自部署实例可用 `NOTIFICATION_REARM_SECONDS` 调整该窗口。
+同一日期、办事处和时段只在官网由不可用变为可用时广播。
+通知记录保存在 `state.json` 的 `notification_episodes`。当前生产配置在配额变为
+不可用后立即重新武装，因此同一行出现红→黄的新跳变时会再次发送群提醒和
+ReleaseSignal；连续保持黄色不会重复发送。自部署实例可用
+`NOTIFICATION_REARM_SECONDS` 增加防抖窗口。
 
 ### 🔗 可选：HKID ReleaseSignal bridge
 

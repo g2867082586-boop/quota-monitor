@@ -26,15 +26,15 @@ class PollSettingsTest(unittest.TestCase):
         ):
             self.assertEqual(_poll_settings(), (1, 30))
 
-    def test_notification_rearm_defaults_to_thirty_minutes(self):
+    def test_notification_rearm_defaults_to_immediate_flap_detection(self):
         with patch.dict(os.environ, {}, clear=True):
-            self.assertEqual(_notification_rearm_seconds(), 1800)
+            self.assertEqual(_notification_rearm_seconds(), 0)
 
     def test_notification_rearm_rejects_invalid_values(self):
         with patch.dict(
             os.environ, {"NOTIFICATION_REARM_SECONDS": "90000"}, clear=True
         ):
-            self.assertEqual(_notification_rearm_seconds(), 1800)
+            self.assertEqual(_notification_rearm_seconds(), 0)
 
 
 class PollLoopTest(unittest.TestCase):

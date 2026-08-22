@@ -62,6 +62,28 @@ class NotificationEpisodeTest(unittest.TestCase):
         self.assertEqual(changes["newly_available"], release()["newly_available"])
         self.assertEqual(episodes["10/26/2026|FTO|R"]["notified_at"], 2000.0)
 
+    def test_zero_rearm_restores_red_yellow_flap_notifications(self):
+        _, episodes = filter_repeat_releases(
+            release(), {KEY: "quota-y"}, {}, rearm_seconds=0, now=100
+        )
+        _, episodes = filter_repeat_releases(
+            {"newly_available": []},
+            {KEY: "quota-r"},
+            episodes,
+            rearm_seconds=0,
+            now=130,
+        )
+        changes, episodes = filter_repeat_releases(
+            release(),
+            {KEY: "quota-y"},
+            episodes,
+            rearm_seconds=0,
+            now=160,
+        )
+
+        self.assertEqual(changes["newly_available"], release()["newly_available"])
+        self.assertEqual(episodes["10/26/2026|FTO|R"]["notified_at"], 160.0)
+
     def test_rows_that_leave_the_snapshot_are_pruned(self):
         episodes = {
             "10/26/2026|FTO|R": {

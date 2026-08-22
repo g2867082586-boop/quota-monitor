@@ -28,6 +28,7 @@ from quota_monitor.notify import (
     send_wecom_webhook,
 )
 from quota_monitor.notification_state import filter_repeat_releases
+from quota_monitor.notification_window import filter_notification_window
 from quota_monitor.release_sink import build_release_signal, deliver_outbox
 from quota_monitor.state import load_state
 
@@ -372,6 +373,14 @@ def _run_poll_cycle(log_no_change=True):
         if signal["event_id"] not in known_ids:
             pending_release_signals.append(signal)
 
+    # Human-facing messages are intentionally narrower than the internal
+    # ReleaseSignal bridge. Only appointments within the next two weeks are
+    # rendered or delivered to Feishu/WeCom subscribers.
+    push_changes = filter_notification_window(
+        changes,
+        today=datetime.now(HONG_KONG_TZ).date(),
+    )
+
     # ── 4. 发送通知 ──
     notify_result = {"feishu": None, "feishu_dm": 0, "wecom": None}
     if is_first_run:
@@ -382,12 +391,12 @@ def _run_poll_cycle(log_no_change=True):
             "event": "first_run",
             "summary": "首次运行，基准快照已建立"
         })
-    elif has_significant_change(changes):
-        message = format_changes(changes, DEFAULT_OFFICES)
+    elif has_significant_change(push_changes):
+        message = format_changes(push_changes, DEFAULT_OFFICES)
         logger.info("检测到配额变化！")
         print(message)
-        _append_run_log(f"ALERT | 新配额放出: {len(changes.get('newly_available',[]))} 个")
-        _record_release_event(changes.get("newly_available", []))
+        _append_run_log(f"ALERT | 两周内新配额放出: {len(push_changes.get('newly_available',[]))} 个")
+        _record_release_event(push_changes.get("newly_available", []))
 
         # Feishu 群聊广播（支持多群：逗号分隔 chat_id）
         app_id = os.environ.get("FEISHU_APP_ID", "")
@@ -419,7 +428,7 @@ def _run_poll_cycle(log_no_change=True):
         if app_id and app_secret:
             feishu_subs = _load_json_encrypted("data/feishu_subs.json")
             if feishu_subs and isinstance(feishu_subs, list) and feishu_subs:
-                released_dates = {date for (date, _, _), _, _ in changes.get("newly_available", [])}
+                released_dates = {date for (date, _, _), _, _ in push_changes.get("newly_available", [])}
                 dms_to_send = []
                 for sub in feishu_subs:
                     open_id = sub.get("open_id", "")
@@ -431,7 +440,7 @@ def _run_poll_cycle(log_no_change=True):
                     if not date_match:
                         continue
                     dm_lines = ["## 🔔 你关注的日期有新增配额！\n"]
-                    for (date, office, qtype), old_s, new_s in changes["newly_available"]:
+                    for (date, office, qtype), old_s, new_s in push_changes["newly_available"]:
                         if user_dates and date not in user_dates:
                             continue
                         if user_offices and office not in user_offices:
@@ -465,12 +474,22 @@ def _run_poll_cycle(log_no_change=True):
         _append_notify_log({
             "time": datetime.now().isoformat(),
             "event": "quota_change",
-            "changes": len(changes.get("newly_available", [])),
+            "changes": len(push_changes.get("newly_available", [])),
             "feishu": notify_result["feishu"],
             "feishu_dm": notify_result.get("feishu_dm", 0),
             "wecom": notify_result["wecom"],
-            "summary": f"配额变化: {len(changes.get('newly_available',[]))} 个日期"
+            "summary": f"两周内配额变化: {len(push_changes.get('newly_available',[]))} 个日期"
         })
+
+    elif has_significant_change(changes):
+        logger.info("新增配额均不在未来两周内，跳过群消息推送")
+        if log_no_change:
+            _append_run_log("SKIP | 新增配额不在未来两周内")
+            _append_notify_log({
+                "time": datetime.now().isoformat(),
+                "event": "quota_change_outside_notification_window",
+                "summary": "新增配额不在未来两周内，未推送"
+            })
 
     else:
         logger.info("配额状态无变化")

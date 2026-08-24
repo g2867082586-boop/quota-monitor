@@ -1,10 +1,6 @@
 {
   "version": 1,
   "monitoring_since": "2026-08-21T10:38:41+08:00",
-  "backfill": {
-    "source": "data/run.log",
-    "limitations": "Recovered event time and count only; appointment details were not retained."
-  },
   "events": [
     {
       "time": "2026-08-21T12:04:21+08:00",
@@ -200,6 +196,22 @@
       "time": "2026-08-22T15:12:24+08:00",
       "count": 1,
       "items": []
+    },
+    {
+      "time": "2026-08-24T14:24:19+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "10/21/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
-  ]
+  ],
+  "backfill": {
+    "source": "data/run.log",
+    "limitations": "Recovered event time and count only; appointment details were not retained."
+  }
 }

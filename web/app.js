@@ -307,7 +307,7 @@ async function init() {
     if (e.key === "Enter") handleSubscribe();
   });
 
-  // 与后端检测频率一致，每 2 分钟绕过 Pages CDN 缓存刷新数据。
+  // 页面每 2 分钟绕过 Pages CDN 缓存刷新；后端每分钟触发并检查两次。
   setInterval(async () => {
     try {
       await loadData();
@@ -409,7 +409,7 @@ function renderHeatmap(pd) {
   if (batchesTrend.length === 0) {
     document.getElementById("tmHead").innerHTML = "";
     document.getElementById("top3List").innerHTML = '<li style="color:var(--text2)">暂无数据</li>';
-    document.getElementById("tmBody").innerHTML = `<tr><td colspan="${N+1}" style="text-align:center;padding:48px 16px;color:var(--text2);font-size:0.9rem">📊 数据收集中，放号规律将在检测到配额变化后自动生成<br><small style="color:var(--text2);opacity:0.7">系统每 2 分钟扫描一次（08:00-24:00）</small></td></tr>`;
+    document.getElementById("tmBody").innerHTML = `<tr><td colspan="${N+1}" style="text-align:center;padding:48px 16px;color:var(--text2);font-size:0.9rem">📊 数据收集中，放号规律将在检测到配额变化后自动生成<br><small style="color:var(--text2);opacity:0.7">系统每分钟触发、每轮间隔 30 秒检查两次（08:00-24:00）</small></td></tr>`;
     return;
   }
 

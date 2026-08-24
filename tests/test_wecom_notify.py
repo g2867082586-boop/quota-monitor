@@ -8,6 +8,7 @@ import requests
 
 from ci_run import (
     _format_wecom_message,
+    _record_dashboard_release,
     _record_release_event,
     _send_wecom_broadcast,
     _wecom_webhook_urls,
@@ -134,6 +135,43 @@ class WecomNotifyTests(unittest.TestCase):
         self.assertEqual(event["count"], 1)
         self.assertEqual(release_log["events"], [event])
         self.assertEqual(event["items"][0]["office"], "FTO")
+
+    def test_dashboard_history_is_not_limited_to_two_week_message_window(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "release_log.json")
+            event = _record_dashboard_release(
+                {
+                    "newly_available": [
+                        (("01/01/2027", "FTO", "R"), "quota-r", "quota-g"),
+                    ],
+                },
+                is_first_run=False,
+                path=path,
+                now="2026-08-24T12:00:00+08:00",
+            )
+
+            with open(path, encoding="utf-8") as handle:
+                release_log = json.load(handle)
+
+        self.assertEqual(event["count"], 1)
+        self.assertEqual(release_log["events"], [event])
+
+    def test_dashboard_history_skips_first_run_baseline(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "release_log.json")
+            event = _record_dashboard_release(
+                {
+                    "newly_available": [
+                        (("09/01/2026", "FTO", "R"), "quota-r", "quota-g"),
+                    ],
+                },
+                is_first_run=True,
+                path=path,
+                now="2026-08-24T12:00:00+08:00",
+            )
+
+            self.assertIsNone(event)
+            self.assertFalse(os.path.exists(path))
 
     @patch.dict(
         os.environ,

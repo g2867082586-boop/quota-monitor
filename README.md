@@ -119,3 +119,7 @@ MIT © [Deng Zheyi](https://github.com/Zheyi-D)
 ## 🔧 开发者
 
 自部署、技术架构、加密方案详见 [ARCHITECTURE.md](ARCHITECTURE.md)。
+
+Linux 服务器可使用 `quota-monitor-daemon` 直接常驻轮询，无需依赖外部
+定时器唤醒 GitHub Actions。守护进程、影子迁移和 systemd 配置见
+[deploy/systemd/README.md](deploy/systemd/README.md)。

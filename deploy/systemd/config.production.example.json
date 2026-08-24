@@ -1,0 +1,39 @@
+{
+  "api": {
+    "svc_id": 579,
+    "timeout": 30
+  },
+  "offices": {
+    "FTO": "火炭办事处",
+    "RHK": "港岛办事处",
+    "RKO": "九龙办事处",
+    "RTK": "将军澳办事处",
+    "TMO": "屯门办事处",
+    "YLO": "元朗办事处"
+  },
+  "date_range": {
+    "start": null,
+    "end": null
+  },
+  "notifications": {
+    "feishu": {"enabled": false},
+    "wecom": {"enabled": false}
+  },
+  "retry": {
+    "max_retries": 3,
+    "backoff_base_seconds": 5
+  },
+  "daemon": {
+    "interval_seconds": 20,
+    "jitter_seconds": 3,
+    "failure_backoff_base_seconds": 30,
+    "failure_backoff_max_seconds": 900,
+    "shadow": true
+  },
+  "log": {
+    "level": "INFO",
+    "file": "/var/log/quota-monitor/monitor.log",
+    "max_size_mb": 20,
+    "backup_count": 5
+  }
+}

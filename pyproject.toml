@@ -1,13 +1,13 @@
 [build-system]
 requires = ["setuptools>=68.0"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "quota-monitor"
 version = "1.0.0"
 description = "香港入境处预约配额监控 — 实时追踪身份证换领预约名额"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.8"
 dependencies = [
     "requests>=2.25",
@@ -15,7 +15,11 @@ dependencies = [
 
 [project.scripts]
 quota-monitor = "quota_monitor.monitor:main"
+quota-monitor-daemon = "quota_monitor.daemon:main"
 
 [project.urls]
 Homepage = "https://github.com/Zheyi-D/quota-monitor"
 Issues = "https://github.com/Zheyi-D/quota-monitor/issues"
+
+[tool.setuptools.packages.find]
+include = ["quota_monitor*"]

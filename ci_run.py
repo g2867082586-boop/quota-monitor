@@ -204,6 +204,14 @@ def _record_release_event(newly_available, path=RELEASE_LOG, now=None):
     return event
 
 
+def _record_dashboard_release(changes, is_first_run, path=RELEASE_LOG, now=None):
+    """记录全部去重后的放号事件，不受群消息的两周窗口限制。"""
+    newly_available = changes.get("newly_available", [])
+    if is_first_run or not newly_available:
+        return None
+    return _record_release_event(newly_available, path=path, now=now)
+
+
 def _save_state_remote(state_file, snapshot, state_extra=None):
     """通过 GitHub API 保存 state.json，不依赖 git push。"""
     import base64 as _b64, time as _time
@@ -363,6 +371,11 @@ def _run_poll_cycle(log_no_change=True):
     release_url = os.environ.get("HKID_RELEASE_WEBHOOK_URL", "").strip()
     release_secret = os.environ.get("HKID_RELEASE_WEBHOOK_SECRET", "")
     newly_available = changes.get("newly_available", [])
+    # The public dashboard tracks every deduplicated release detected by this
+    # fork. Human messages remain restricted to appointments in the next two
+    # weeks below, but that delivery policy must not erase dashboard history.
+    _record_dashboard_release(changes, is_first_run)
+
     if not is_first_run and newly_available and release_url and release_secret:
         signal = build_release_signal(newly_available)
         known_ids = {
@@ -396,7 +409,6 @@ def _run_poll_cycle(log_no_change=True):
         logger.info("检测到配额变化！")
         print(message)
         _append_run_log(f"ALERT | 两周内新配额放出: {len(push_changes.get('newly_available',[]))} 个")
-        _record_release_event(push_changes.get("newly_available", []))
 
         # Feishu 群聊广播（支持多群：逗号分隔 chat_id）
         app_id = os.environ.get("FEISHU_APP_ID", "")
@@ -484,7 +496,10 @@ def _run_poll_cycle(log_no_change=True):
     elif has_significant_change(changes):
         logger.info("新增配额均不在未来两周内，跳过群消息推送")
         if log_no_change:
-            _append_run_log("SKIP | 新增配额不在未来两周内")
+            _append_run_log(
+                "SKIP | 新增配额不在未来两周内: "
+                f"{len(changes.get('newly_available', []))} 个"
+            )
             _append_notify_log({
                 "time": datetime.now().isoformat(),
                 "event": "quota_change_outside_notification_window",

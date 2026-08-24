@@ -1,0 +1,41 @@
+[Unit]
+Description=HK IMMD quota monitor
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Service]
+Type=simple
+User=quota-monitor
+Group=quota-monitor
+WorkingDirectory=/opt/quota-monitor
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=-/etc/quota-monitor/quota-monitor.env
+ExecStart=/opt/quota-monitor/.venv/bin/quota-monitor-daemon \
+    --config /etc/quota-monitor/config.json \
+    --state /var/lib/quota-monitor/state.json \
+    --web-data /var/lib/quota-monitor/web/quota.json \
+    --last-update /var/lib/quota-monitor/web/last_update.json
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+KillSignal=SIGTERM
+
+StateDirectory=quota-monitor
+LogsDirectory=quota-monitor
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+ReadWritePaths=/var/lib/quota-monitor /var/log/quota-monitor
+
+[Install]
+WantedBy=multi-user.target

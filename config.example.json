@@ -47,6 +47,14 @@
     "backoff_base_seconds": 5
   },
 
+  "daemon": {
+    "interval_seconds": 20,
+    "jitter_seconds": 3,
+    "failure_backoff_base_seconds": 30,
+    "failure_backoff_max_seconds": 900,
+    "shadow": true
+  },
+
   "log": {
     "level": "INFO",
     "file": "monitor.log",

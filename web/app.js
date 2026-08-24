@@ -345,24 +345,32 @@ const DAYS_TREND = ["日","一","二","三","四","五","六"];
 
 let batchesTrend = [];
 let selectedTrendPeriod = 7;
+let trendLoadFailed = false;
 
 async function loadTrendData() {
-  batchesTrend = [];
   try {
     const resp = await fetchFresh("data/release_log.json");
-    if (resp.ok) {
-      const data = await resp.json();
-      const events = Array.isArray(data.events) ? data.events : [];
-      batchesTrend = events
-        .map(event => ({
-          t: new Date(event.time),
-          count: Number(event.count) || 0,
-          dates: Array.isArray(event.items) ? event.items.map(item => item.date) : [],
-        }))
-        .filter(event => !Number.isNaN(event.t.getTime()) && event.count > 0);
-      batchesTrend.sort((a, b) => b.t - a.t);
-    }
-  } catch (_) { /* file may not exist yet */ }
+    if (!resp.ok) throw new Error(`release log HTTP ${resp.status}`);
+
+    const data = await resp.json();
+    const events = Array.isArray(data.events) ? data.events : [];
+    const nextBatches = events
+      .map(event => ({
+        t: new Date(event.time),
+        count: Number(event.count) || 0,
+        dates: Array.isArray(event.items) ? event.items.map(item => item.date) : [],
+      }))
+      .filter(event => !Number.isNaN(event.t.getTime()) && event.count > 0);
+    nextBatches.sort((a, b) => b.t - a.t);
+
+    // Only replace the last known-good history after the response has been
+    // fetched and parsed successfully. A transient Pages deployment must not
+    // turn a populated dashboard into "暂无记录".
+    batchesTrend = nextBatches;
+    trendLoadFailed = false;
+  } catch (_) {
+    trendLoadFailed = true;
+  }
 }
 
 async function refreshTrend() {
@@ -396,7 +404,9 @@ function fmtTrendTime(ts) {
 
 function updateCountdown() {
   document.getElementById("tcVal").textContent =
-    batchesTrend.length > 0 ? fmtTrendTime(batchesTrend[0].t) : "暂无记录";
+    batchesTrend.length > 0
+      ? fmtTrendTime(batchesTrend[0].t)
+      : (trendLoadFailed ? "数据暂时加载失败" : "暂无记录");
 }
 
 function fmtDate(ts) {
@@ -408,8 +418,13 @@ function renderHeatmap(pd) {
   const N = HOURS_TREND.length;
   if (batchesTrend.length === 0) {
     document.getElementById("tmHead").innerHTML = "";
-    document.getElementById("top3List").innerHTML = '<li style="color:var(--text2)">暂无数据</li>';
-    document.getElementById("tmBody").innerHTML = `<tr><td colspan="${N+1}" style="text-align:center;padding:48px 16px;color:var(--text2);font-size:0.9rem">📊 数据收集中，放号规律将在检测到配额变化后自动生成<br><small style="color:var(--text2);opacity:0.7">系统每分钟触发、每轮间隔 30 秒检查两次（08:00-24:00）</small></td></tr>`;
+    document.getElementById("top3List").innerHTML = trendLoadFailed
+      ? '<li style="color:var(--text2)">数据加载失败，请稍后重试</li>'
+      : '<li style="color:var(--text2)">暂无数据</li>';
+    const emptyMessage = trendLoadFailed
+      ? "⚠️ 数据暂时加载失败，请稍后重试"
+      : "📊 数据收集中，放号规律将在检测到配额变化后自动生成";
+    document.getElementById("tmBody").innerHTML = `<tr><td colspan="${N+1}" style="text-align:center;padding:48px 16px;color:var(--text2);font-size:0.9rem">${emptyMessage}<br><small style="color:var(--text2);opacity:0.7">系统每分钟触发、每轮间隔 30 秒检查两次（08:00-24:00）</small></td></tr>`;
     return;
   }
 

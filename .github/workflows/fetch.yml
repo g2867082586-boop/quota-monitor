@@ -29,6 +29,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # repository_dispatch records the main SHA when the event is created.
+      # A queued run may start after the previous run has already pushed newer
+      # release history, so fast-forward before reading any mutable state.
+      - name: Sync latest main
+        run: |
+          git fetch origin main
+          git merge --ff-only origin/main
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -56,9 +64,12 @@ jobs:
           HKID_RELEASE_WEBHOOK_TIMEOUT_SECONDS: "10"
         run: python ci_run.py
 
+      - name: Validate generated data
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.test_wecom != true }}
+        run: python -m json.tool data/release_log.json > /dev/null
+
       - name: Commit updated data
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.test_wecom != true }}
-        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -80,7 +91,9 @@ jobs:
             fi
           done
           if ! git diff --staged --quiet; then
-            git commit -m "🔄 Update quota data" && (git pull --rebase && git push || git push --force-with-lease) || echo "Push failed (non-critical)"
+            git commit -m "🔄 Update quota data"
+            git pull --rebase origin main
+            git push origin HEAD:main
           else
             echo "No changes to commit"
           fi
@@ -92,6 +105,7 @@ jobs:
       - name: Prepare Pages site
         if: ${{ vars.ENABLE_PAGES == 'true' && (github.event_name != 'workflow_dispatch' || inputs.test_wecom != true) }}
         run: |
+          python -m json.tool data/release_log.json > /dev/null
           mkdir -p _site/data
           cp -r web/* _site/
           cp data/quota.json _site/data/

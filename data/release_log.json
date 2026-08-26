@@ -12772,6 +12772,36 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-08-26T18:52:12+08:00",
+      "count": 4,
+      "items": [
+        {
+          "date": "10/29/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/03/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/03/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/04/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

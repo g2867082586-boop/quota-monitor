@@ -5,6 +5,7 @@ import logging
 import time
 from datetime import datetime
 from email.utils import parsedate_to_datetime
+from html import unescape
 
 import requests
 
@@ -287,6 +288,24 @@ def _render_item(tpl_item, **kwargs):
     return result
 
 
+def _markdown_link(label, value):
+    """Return a clickable Markdown link while preserving custom non-URL text."""
+    target = str(value).strip()
+    # Older encrypted templates contain HTML-escaped query strings, sometimes
+    # escaped more than once. Normalize them before building Markdown so the
+    # final click reaches the intended URL instead of an `amp;` variant.
+    for _ in range(10):
+        normalized = unescape(target)
+        if normalized == target:
+            break
+        target = normalized
+    if target.startswith("[") and "](" in target and target.endswith(")"):
+        return target
+    if not target.startswith(("https://", "http://")):
+        return target
+    return f"[{label}]({target})"
+
+
 def format_changes(changes, offices=None):
     """将变化字典格式化为人类可读的消息文本。
 
@@ -343,6 +362,16 @@ def format_changes(changes, offices=None):
         item_fmt = default_item
         footer = default_footer
         links = default_links
+
+    # Both Feishu cards and WeCom markdown render these as one-click links.
+    # Apply this after merging the encrypted/custom template so production
+    # templates receive the same behaviour without exposing or rewriting them.
+    links = {
+        **links,
+        "dashboard_url": _markdown_link("点击进入", links["dashboard_url"]),
+        "booking_url": _markdown_link("点击进入", links["booking_url"]),
+        "quota_url": _markdown_link("点击进入", links["quota_url"]),
+    }
 
     lines = []
     # 渲染 header

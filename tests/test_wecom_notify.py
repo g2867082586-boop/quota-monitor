@@ -108,6 +108,19 @@ class WecomNotifyTests(unittest.TestCase):
             message,
         )
         self.assertNotIn("https://Zheyi-D.github.io/quota-monitor", message)
+        self.assertIn(
+            "[点击进入](https://g2867082586-boop.github.io/quota-monitor/)",
+            message,
+        )
+        self.assertIn(
+            "[点击进入](https://www.gov.hk/sc/apps/immdicbooking2.htm)",
+            message,
+        )
+        self.assertIn(
+            "[点击进入](https://eservices.es2.immd.gov.hk/es/"
+            "quota-enquiry-client/?l=zh-CN&appId=579)",
+            message,
+        )
 
     def test_records_only_this_forks_release_history(self):
         with tempfile.TemporaryDirectory() as directory:

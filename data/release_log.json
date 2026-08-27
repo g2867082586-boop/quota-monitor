@@ -18070,6 +18070,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-08-27T16:22:16+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "10/23/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

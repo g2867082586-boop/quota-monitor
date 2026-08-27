@@ -16510,6 +16510,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-08-27T13:54:01+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "10/29/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

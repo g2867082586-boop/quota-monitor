@@ -261,7 +261,7 @@
     "09/22/2026|RKO|K": "no-quotaK",
     "09/22/2026|RTK|R": "quota-r",
     "09/22/2026|RTK|K": "no-quotaK",
-    "09/22/2026|TMO|R": "quota-r",
+    "09/22/2026|TMO|R": "quota-y",
     "09/22/2026|TMO|K": "no-quotaK",
     "09/22/2026|YLO|R": "quota-r",
     "09/22/2026|YLO|K": "no-quotaK",
@@ -287,7 +287,7 @@
     "09/24/2026|RTK|K": "no-quotaK",
     "09/24/2026|TMO|R": "quota-r",
     "09/24/2026|TMO|K": "no-quotaK",
-    "09/24/2026|YLO|R": "quota-r",
+    "09/24/2026|YLO|R": "quota-y",
     "09/24/2026|YLO|K": "no-quotaK",
     "09/25/2026|FTO|R": "quota-r",
     "09/25/2026|FTO|K": "no-quotaK",
@@ -303,7 +303,7 @@
     "09/25/2026|YLO|K": "no-quotaK",
     "09/28/2026|FTO|R": "quota-r",
     "09/28/2026|FTO|K": "no-quotaK",
-    "09/28/2026|RHK|R": "quota-r",
+    "09/28/2026|RHK|R": "quota-y",
     "09/28/2026|RHK|K": "no-quotaK",
     "09/28/2026|RKO|R": "quota-r",
     "09/28/2026|RKO|K": "no-quotaK",
@@ -1154,7 +1154,7 @@
     "12/21/2026|YLO|R": "quota-g",
     "12/21/2026|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-08-27T12:59:02",
+  "last_snapshot_time": "2026-08-27T12:59:37",
   "pending_release_signals": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
@@ -1614,24 +1614,16 @@
       "unavailable_since": null
     },
     "09/22/2026|TMO|R": {
-      "notified_at": 1787806593.2036002,
-      "unavailable_since": 1787806742.8220575
+      "notified_at": 1787806775.2377355,
+      "unavailable_since": null
     },
     "09/24/2026|YLO|R": {
-      "notified_at": 1787806593.2036002,
-      "unavailable_since": 1787806742.8220575
+      "notified_at": 1787806775.2377355,
+      "unavailable_since": null
     },
     "09/28/2026|RHK|R": {
-      "notified_at": 1787806593.2036002,
-      "unavailable_since": 1787806742.8220575
-    },
-    "09/21/2026|TMO|R": {
-      "notified_at": 1787806719.3515768,
-      "unavailable_since": 1787806742.8220575
-    },
-    "10/05/2026|FTO|R": {
-      "notified_at": 1787806719.3515768,
-      "unavailable_since": 1787806742.8220575
+      "notified_at": 1787806775.2377355,
+      "unavailable_since": null
     }
   }
 }

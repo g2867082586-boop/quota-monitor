@@ -18700,6 +18700,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-08-27T17:48:18+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "10/30/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

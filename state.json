@@ -587,7 +587,7 @@
     "10/28/2026|RTK|K": "no-quotaK",
     "10/28/2026|TMO|R": "quota-r",
     "10/28/2026|TMO|K": "no-quotaK",
-    "10/28/2026|YLO|R": "quota-r",
+    "10/28/2026|YLO|R": "quota-y",
     "10/28/2026|YLO|K": "no-quotaK",
     "10/29/2026|FTO|R": "quota-y",
     "10/29/2026|FTO|K": "no-quotaK",
@@ -1154,7 +1154,7 @@
     "12/22/2026|YLO|R": "quota-g",
     "12/22/2026|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-08-28T14:17:43",
+  "last_snapshot_time": "2026-08-28T14:18:12",
   "pending_release_signals": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
@@ -1164,10 +1164,6 @@
     "12/22/2026|RKO|R": {
       "notified_at": 1787883394.1871927,
       "unavailable_since": null
-    },
-    "10/28/2026|YLO|R": {
-      "notified_at": 1787896945.5779104,
-      "unavailable_since": 1787897861.5952437
     },
     "10/29/2026|FTO|R": {
       "notified_at": 1787896945.5779104,
@@ -1219,6 +1215,10 @@
     },
     "11/21/2026|RHK|R": {
       "notified_at": 1787896945.5779104,
+      "unavailable_since": null
+    },
+    "10/28/2026|YLO|R": {
+      "notified_at": 1787897891.8576849,
       "unavailable_since": null
     }
   }

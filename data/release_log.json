@@ -21346,6 +21346,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-08-28T17:24:01+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "11/03/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

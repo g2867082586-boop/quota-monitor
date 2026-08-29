@@ -21814,6 +21814,30 @@
           "status": "quota-g"
         }
       ]
+    },
+    {
+      "time": "2026-08-29T10:31:42+08:00",
+      "count": 3,
+      "items": [
+        {
+          "date": "11/03/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/05/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "12/19/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

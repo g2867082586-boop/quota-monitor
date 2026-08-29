@@ -22726,6 +22726,24 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-08-29T12:50:35+08:00",
+      "count": 2,
+      "items": [
+        {
+          "date": "10/26/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "10/29/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

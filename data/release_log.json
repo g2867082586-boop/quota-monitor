@@ -25930,6 +25930,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-08-30T10:30:50+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "11/04/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

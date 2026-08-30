@@ -26704,6 +26704,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-08-30T18:22:28+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "11/06/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

@@ -35302,6 +35302,72 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-01T14:56:11+08:00",
+      "count": 7,
+      "items": [
+        {
+          "date": "09/02/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "09/03/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "09/07/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "09/08/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "09/08/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "09/09/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "09/17/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-01T14:56:48+08:00",
+      "count": 2,
+      "items": [
+        {
+          "date": "09/19/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "10/02/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

@@ -1154,7 +1154,7 @@
     "12/28/2026|YLO|R": "quota-g",
     "12/28/2026|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-01T18:08:04",
+  "last_snapshot_time": "2026-09-01T18:09:27",
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -1306,32 +1306,6 @@
       "schema": "hkid.quota.release.v1",
       "event_id": "0477c09a832128bfe2af9e4e6ee452d3103831708be3e0336b51685586d181ee",
       "observed_at": "2026-09-01T09:24:55.246629Z",
-      "released": [
-        {
-          "date": "2026-09-30",
-          "office_id": "RKO",
-          "quota_type": "R",
-          "status": "quota-g"
-        }
-      ]
-    },
-    {
-      "schema": "hkid.quota.release.v1",
-      "event_id": "32fadf0075580d4cf77193108d696c04eff0926874b5be6b21de65f4863e14d0",
-      "observed_at": "2026-09-01T09:26:03.467075Z",
-      "released": [
-        {
-          "date": "2026-10-23",
-          "office_id": "FTO",
-          "quota_type": "R",
-          "status": "quota-y"
-        }
-      ]
-    },
-    {
-      "schema": "hkid.quota.release.v1",
-      "event_id": "16dfd9a9c6cb22044a9486233969fd5d97fcf7eeaf7cc156982633dafffb436b",
-      "observed_at": "2026-09-01T09:28:41.194232Z",
       "released": [
         {
           "date": "2026-09-30",

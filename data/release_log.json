@@ -32950,6 +32950,30 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-01T12:20:23+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "09/14/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-01T12:20:58+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "10/26/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

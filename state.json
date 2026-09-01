@@ -149,7 +149,7 @@
     "09/16/2026|FTO|K": "no-quotaK",
     "09/16/2026|RHK|R": "quota-r",
     "09/16/2026|RHK|K": "no-quotaK",
-    "09/16/2026|RKO|R": "quota-y",
+    "09/16/2026|RKO|R": "quota-r",
     "09/16/2026|RKO|K": "no-quotaK",
     "09/16/2026|RTK|R": "quota-r",
     "09/16/2026|RTK|K": "no-quotaK",
@@ -161,7 +161,7 @@
     "09/17/2026|FTO|K": "no-quotaK",
     "09/17/2026|RHK|R": "quota-r",
     "09/17/2026|RHK|K": "no-quotaK",
-    "09/17/2026|RKO|R": "quota-y",
+    "09/17/2026|RKO|R": "quota-r",
     "09/17/2026|RKO|K": "no-quotaK",
     "09/17/2026|RTK|R": "quota-r",
     "09/17/2026|RTK|K": "no-quotaK",
@@ -197,7 +197,7 @@
     "09/21/2026|FTO|K": "no-quotaK",
     "09/21/2026|RHK|R": "quota-r",
     "09/21/2026|RHK|K": "no-quotaK",
-    "09/21/2026|RKO|R": "quota-y",
+    "09/21/2026|RKO|R": "quota-r",
     "09/21/2026|RKO|K": "no-quotaK",
     "09/21/2026|RTK|R": "quota-r",
     "09/21/2026|RTK|K": "no-quotaK",
@@ -257,7 +257,7 @@
     "09/28/2026|FTO|K": "no-quotaK",
     "09/28/2026|RHK|R": "quota-r",
     "09/28/2026|RHK|K": "no-quotaK",
-    "09/28/2026|RKO|R": "quota-r",
+    "09/28/2026|RKO|R": "quota-g",
     "09/28/2026|RKO|K": "no-quotaK",
     "09/28/2026|RTK|R": "quota-r",
     "09/28/2026|RTK|K": "no-quotaK",
@@ -269,7 +269,7 @@
     "09/29/2026|FTO|K": "no-quotaK",
     "09/29/2026|RHK|R": "quota-r",
     "09/29/2026|RHK|K": "no-quotaK",
-    "09/29/2026|RKO|R": "quota-r",
+    "09/29/2026|RKO|R": "quota-g",
     "09/29/2026|RKO|K": "no-quotaK",
     "09/29/2026|RTK|R": "quota-r",
     "09/29/2026|RTK|K": "no-quotaK",
@@ -281,7 +281,7 @@
     "09/30/2026|FTO|K": "no-quotaK",
     "09/30/2026|RHK|R": "quota-r",
     "09/30/2026|RHK|K": "no-quotaK",
-    "09/30/2026|RKO|R": "quota-r",
+    "09/30/2026|RKO|R": "quota-g",
     "09/30/2026|RKO|K": "no-quotaK",
     "09/30/2026|RTK|R": "quota-r",
     "09/30/2026|RTK|K": "no-quotaK",
@@ -393,7 +393,7 @@
     "10/12/2026|RKO|K": "no-quotaK",
     "10/12/2026|RTK|R": "quota-y",
     "10/12/2026|RTK|K": "no-quotaK",
-    "10/12/2026|TMO|R": "quota-y",
+    "10/12/2026|TMO|R": "quota-r",
     "10/12/2026|TMO|K": "no-quotaK",
     "10/12/2026|YLO|R": "quota-y",
     "10/12/2026|YLO|K": "no-quotaK",
@@ -457,13 +457,13 @@
     "10/17/2026|TMO|K": "no-quotaK",
     "10/17/2026|YLO|R": "quota-r",
     "10/17/2026|YLO|K": "no-quotaK",
-    "10/20/2026|FTO|R": "quota-y",
+    "10/20/2026|FTO|R": "quota-r",
     "10/20/2026|FTO|K": "no-quotaK",
     "10/20/2026|RHK|R": "quota-y",
     "10/20/2026|RHK|K": "no-quotaK",
     "10/20/2026|RKO|R": "quota-r",
     "10/20/2026|RKO|K": "no-quotaK",
-    "10/20/2026|RTK|R": "quota-y",
+    "10/20/2026|RTK|R": "quota-r",
     "10/20/2026|RTK|K": "no-quotaK",
     "10/20/2026|TMO|R": "quota-r",
     "10/20/2026|TMO|K": "no-quotaK",
@@ -481,7 +481,7 @@
     "10/21/2026|TMO|K": "no-quotaK",
     "10/21/2026|YLO|R": "quota-y",
     "10/21/2026|YLO|K": "no-quotaK",
-    "10/22/2026|FTO|R": "quota-y",
+    "10/22/2026|FTO|R": "quota-r",
     "10/22/2026|FTO|K": "no-quotaK",
     "10/22/2026|RHK|R": "quota-y",
     "10/22/2026|RHK|K": "no-quotaK",
@@ -493,7 +493,7 @@
     "10/22/2026|TMO|K": "no-quotaK",
     "10/22/2026|YLO|R": "quota-y",
     "10/22/2026|YLO|K": "no-quotaK",
-    "10/23/2026|FTO|R": "quota-y",
+    "10/23/2026|FTO|R": "quota-r",
     "10/23/2026|FTO|K": "no-quotaK",
     "10/23/2026|RHK|R": "quota-y",
     "10/23/2026|RHK|K": "no-quotaK",
@@ -1154,7 +1154,7 @@
     "12/28/2026|YLO|R": "quota-g",
     "12/28/2026|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-01T17:18:51",
+  "last_snapshot_time": "2026-09-01T17:19:48",
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -1261,6 +1261,31 @@
           "office_id": "RKO",
           "quota_type": "R",
           "status": "quota-y"
+        }
+      ]
+    },
+    {
+      "schema": "hkid.quota.release.v1",
+      "event_id": "1248c7ace7c0ebe52ee0c5227f77007d184057107177a4e551208d76e697770c",
+      "observed_at": "2026-09-01T09:19:12.880223Z",
+      "released": [
+        {
+          "date": "2026-09-28",
+          "office_id": "RKO",
+          "quota_type": "R",
+          "status": "quota-g"
+        },
+        {
+          "date": "2026-09-29",
+          "office_id": "RKO",
+          "quota_type": "R",
+          "status": "quota-g"
+        },
+        {
+          "date": "2026-09-30",
+          "office_id": "RKO",
+          "quota_type": "R",
+          "status": "quota-g"
         }
       ]
     }
@@ -1448,7 +1473,7 @@
     },
     "10/12/2026|TMO|R": {
       "notified_at": 1788245282.6692069,
-      "unavailable_since": null
+      "unavailable_since": 1788254352.8435955
     },
     "10/12/2026|YLO|R": {
       "notified_at": 1788245282.6692069,
@@ -1508,7 +1533,7 @@
     },
     "10/20/2026|FTO|R": {
       "notified_at": 1788245282.6692069,
-      "unavailable_since": null
+      "unavailable_since": 1788254352.8435955
     },
     "10/20/2026|RHK|R": {
       "notified_at": 1788245282.6692069,
@@ -1516,7 +1541,7 @@
     },
     "10/20/2026|RTK|R": {
       "notified_at": 1788245282.6692069,
-      "unavailable_since": null
+      "unavailable_since": 1788254352.8435955
     },
     "10/20/2026|YLO|R": {
       "notified_at": 1788245282.6692069,
@@ -1536,7 +1561,7 @@
     },
     "10/22/2026|FTO|R": {
       "notified_at": 1788245282.6692069,
-      "unavailable_since": null
+      "unavailable_since": 1788254352.8435955
     },
     "10/22/2026|TMO|R": {
       "notified_at": 1788245282.6692069,
@@ -1680,7 +1705,7 @@
     },
     "10/23/2026|FTO|R": {
       "notified_at": 1788246085.7028086,
-      "unavailable_since": null
+      "unavailable_since": 1788254352.8435955
     },
     "10/23/2026|TMO|R": {
       "notified_at": 1788246085.7028086,
@@ -1720,11 +1745,11 @@
     },
     "09/17/2026|RKO|R": {
       "notified_at": 1788253390.929481,
-      "unavailable_since": null
+      "unavailable_since": 1788254352.8435955
     },
     "09/21/2026|RKO|R": {
       "notified_at": 1788253390.929481,
-      "unavailable_since": null
+      "unavailable_since": 1788254352.8435955
     },
     "09/22/2026|RKO|R": {
       "notified_at": 1788253390.929481,
@@ -1740,6 +1765,18 @@
     },
     "09/16/2026|RKO|R": {
       "notified_at": 1788254102.8897152,
+      "unavailable_since": 1788254352.8435955
+    },
+    "09/28/2026|RKO|R": {
+      "notified_at": 1788254352.8435955,
+      "unavailable_since": null
+    },
+    "09/29/2026|RKO|R": {
+      "notified_at": 1788254352.8435955,
+      "unavailable_since": null
+    },
+    "09/30/2026|RKO|R": {
+      "notified_at": 1788254352.8435955,
       "unavailable_since": null
     }
   }

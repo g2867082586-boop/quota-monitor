@@ -36640,6 +36640,24 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-01T18:34:05+08:00",
+      "count": 2,
+      "items": [
+        {
+          "date": "10/15/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "10/20/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

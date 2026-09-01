@@ -1154,7 +1154,7 @@
     "12/28/2026|YLO|R": "quota-g",
     "12/28/2026|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-01T21:00:01",
+  "last_snapshot_time": "2026-09-01T21:01:03",
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -1259,69 +1259,6 @@
         {
           "date": "2026-11-02",
           "office_id": "RKO",
-          "quota_type": "R",
-          "status": "quota-y"
-        }
-      ]
-    },
-    {
-      "schema": "hkid.quota.release.v1",
-      "event_id": "87cd972a623978026e5cb15ea4590c3f7fcf6262e2bf8776d2ec4e1196cb89db",
-      "observed_at": "2026-09-01T12:49:50.409399Z",
-      "released": [
-        {
-          "date": "2026-10-22",
-          "office_id": "RHK",
-          "quota_type": "R",
-          "status": "quota-y"
-        },
-        {
-          "date": "2026-10-22",
-          "office_id": "RTK",
-          "quota_type": "R",
-          "status": "quota-y"
-        },
-        {
-          "date": "2026-10-23",
-          "office_id": "RHK",
-          "quota_type": "R",
-          "status": "quota-y"
-        },
-        {
-          "date": "2026-10-28",
-          "office_id": "TMO",
-          "quota_type": "R",
-          "status": "quota-y"
-        },
-        {
-          "date": "2026-11-06",
-          "office_id": "RKO",
-          "quota_type": "R",
-          "status": "quota-y"
-        }
-      ]
-    },
-    {
-      "schema": "hkid.quota.release.v1",
-      "event_id": "2f3307cc18618bfb487d659a83f80b650c77f97bca417c3433ef33570619baa5",
-      "observed_at": "2026-09-01T12:54:35.950786Z",
-      "released": [
-        {
-          "date": "2026-11-02",
-          "office_id": "TMO",
-          "quota_type": "R",
-          "status": "quota-y"
-        }
-      ]
-    },
-    {
-      "schema": "hkid.quota.release.v1",
-      "event_id": "c12bf331b097f0e770ecba65bf71cf27ebd53670904939165a431186786ef93b",
-      "observed_at": "2026-09-01T12:59:20.043348Z",
-      "released": [
-        {
-          "date": "2026-11-02",
-          "office_id": "TMO",
           "quota_type": "R",
           "status": "quota-y"
         }

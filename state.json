@@ -1154,7 +1154,7 @@
     "12/28/2026|YLO|R": "quota-g",
     "12/28/2026|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-01T17:09:40",
+  "last_snapshot_time": "2026-09-01T17:11:07",
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -1698,10 +1698,6 @@
     "09/24/2026|RKO|R": {
       "notified_at": 1788253390.929481,
       "unavailable_since": null
-    },
-    "09/16/2026|RKO|R": {
-      "notified_at": 1788253710.3633525,
-      "unavailable_since": 1788253751.4943259
     }
   }
 }

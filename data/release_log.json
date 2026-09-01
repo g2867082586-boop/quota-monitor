@@ -30766,6 +30766,192 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-01T09:15:59+08:00",
+      "count": 30,
+      "items": [
+        {
+          "date": "10/30/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/02/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/03/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/03/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/03/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/04/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/04/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/04/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/04/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/05/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/05/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/05/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/05/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/06/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/06/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/06/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/06/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/09/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/09/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/09/2026",
+          "office": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/09/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/10/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/10/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/11/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/11/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/12/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/13/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/16/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/28/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "12/19/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

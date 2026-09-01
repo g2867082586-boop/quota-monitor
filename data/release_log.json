@@ -32410,6 +32410,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-01T11:57:51+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "09/15/2026",
+          "office": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

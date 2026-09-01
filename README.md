@@ -40,6 +40,10 @@
 `WECOM_WEBHOOK_URL` 可用逗号或换行分隔多个群机器人地址。Webhook 等同于发消息密钥，
 不要写入代码、日志或公开 Issue。
 
+如需临时暂停所有人工消息而继续监控和更新看板，请在 Actions Variables 中设置
+`NOTIFICATIONS_PAUSED=true`；恢复推送时改为 `false`。该开关不会删除任何 Webhook
+或应用密钥，也不会暂停内部 ReleaseSignal。
+
 ---
 
 ## 🖥 看板

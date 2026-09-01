@@ -50,6 +50,25 @@ MAX_POLL_INTERVAL_SECONDS = 60
 MAX_POLL_ITERATIONS = 2
 DEFAULT_NOTIFICATION_REARM_SECONDS = 0
 MAX_NOTIFICATION_REARM_SECONDS = 86400
+HUMAN_NOTIFICATION_ENV_VARS = (
+    "FEISHU_APP_ID",
+    "FEISHU_APP_SECRET",
+    "FEISHU_CHAT_ID",
+    "FEISHU_WEBHOOK_URL",
+    "WECOM_WEBHOOK_URL",
+)
+
+
+def _apply_notification_pause():
+    """暂停人工消息通道，同时保留监控、看板和 ReleaseSignal。"""
+    paused = os.environ.get("NOTIFICATIONS_PAUSED", "").strip().lower()
+    if paused not in ("1", "true", "yes", "on"):
+        return False
+
+    for name in HUMAN_NOTIFICATION_ENV_VARS:
+        os.environ.pop(name, None)
+    logger.warning("人工通知已通过 NOTIFICATIONS_PAUSED 暂停")
+    return True
 
 
 def _wecom_webhook_urls():
@@ -620,9 +639,13 @@ def _notification_rearm_seconds():
 
 def main():
     logger.info("CI Run — %s", datetime.now().isoformat())
+    notifications_paused = _apply_notification_pause()
 
     # workflow_dispatch 可只测试企业微信，不抓取或改写配额状态。
     if os.environ.get("WECOM_TEST_ONLY", "").lower() in ("1", "true", "yes"):
+        if notifications_paused:
+            logger.info("人工通知当前已暂停，跳过企业微信测试消息")
+            return
         status, target_count = _send_wecom_broadcast(
             "企业微信群机器人连接测试成功。\n\n"
             "如果你看到了这条消息，GitHub Actions Secret 已配置正确。"

@@ -7,6 +7,7 @@ from unittest.mock import Mock, patch
 import requests
 
 from ci_run import (
+    _apply_notification_pause,
     _format_wecom_message,
     _record_dashboard_release,
     _record_release_event,
@@ -23,6 +24,45 @@ WECOM_URL = (
 
 
 class WecomNotifyTests(unittest.TestCase):
+    def test_notification_pause_clears_human_channels_only(self):
+        notification_env = {
+            "NOTIFICATIONS_PAUSED": "true",
+            "FEISHU_APP_ID": "app-id",
+            "FEISHU_APP_SECRET": "app-secret",
+            "FEISHU_CHAT_ID": "chat-id",
+            "FEISHU_WEBHOOK_URL": "https://example.test/feishu",
+            "WECOM_WEBHOOK_URL": WECOM_URL,
+            "HKID_RELEASE_WEBHOOK_URL": "https://example.test/release",
+            "HKID_RELEASE_WEBHOOK_SECRET": "release-secret",
+        }
+        with patch.dict(os.environ, notification_env, clear=True):
+            self.assertTrue(_apply_notification_pause())
+            for name in (
+                "FEISHU_APP_ID",
+                "FEISHU_APP_SECRET",
+                "FEISHU_CHAT_ID",
+                "FEISHU_WEBHOOK_URL",
+                "WECOM_WEBHOOK_URL",
+            ):
+                self.assertNotIn(name, os.environ)
+            self.assertEqual(
+                os.environ["HKID_RELEASE_WEBHOOK_URL"],
+                notification_env["HKID_RELEASE_WEBHOOK_URL"],
+            )
+            self.assertEqual(
+                os.environ["HKID_RELEASE_WEBHOOK_SECRET"],
+                notification_env["HKID_RELEASE_WEBHOOK_SECRET"],
+            )
+
+    @patch.dict(
+        os.environ,
+        {"NOTIFICATIONS_PAUSED": "false", "WECOM_WEBHOOK_URL": WECOM_URL},
+        clear=True,
+    )
+    def test_notification_pause_false_keeps_human_channels(self):
+        self.assertFalse(_apply_notification_pause())
+        self.assertEqual(os.environ["WECOM_WEBHOOK_URL"], WECOM_URL)
+
     @patch("quota_monitor.notify.requests.post")
     def test_sends_markdown_to_official_webhook(self, post):
         post.return_value = Mock(status_code=200)

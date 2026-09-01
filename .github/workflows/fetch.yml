@@ -52,6 +52,7 @@ jobs:
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
           FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID }}
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+          NOTIFICATIONS_PAUSED: ${{ vars.NOTIFICATIONS_PAUSED || 'false' }}
           WECOM_TEST_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.test_wecom && '1' || '0' }}
           POLL_ITERATIONS: ${{ github.event_name == 'repository_dispatch' && '2' || '1' }}
           POLL_INTERVAL_SECONDS: "30"

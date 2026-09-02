@@ -38470,6 +38470,24 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-02T10:33:26+08:00",
+      "count": 2,
+      "items": [
+        {
+          "date": "09/10/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-g"
+        },
+        {
+          "date": "09/14/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-g"
+        }
+      ]
     }
   ],
   "backfill": {

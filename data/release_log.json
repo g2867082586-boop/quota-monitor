@@ -42394,6 +42394,24 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-02T21:22:20+08:00",
+      "count": 2,
+      "items": [
+        {
+          "date": "09/29/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "10/09/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

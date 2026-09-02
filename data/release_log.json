@@ -41398,6 +41398,18 @@
           "status": "quota-g"
         }
       ]
+    },
+    {
+      "time": "2026-09-02T15:24:22+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "11/28/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-g"
+        }
+      ]
     }
   ],
   "backfill": {

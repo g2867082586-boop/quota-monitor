@@ -1,10 +1,5 @@
 [
   {
-    "time": "2026-09-02T06:48:31.411668",
-    "event": "no_change",
-    "summary": "无变化"
-  },
-  {
     "time": "2026-09-02T06:49:29.989746",
     "event": "quota_change",
     "changes": 25,
@@ -2592,6 +2587,11 @@
   },
   {
     "time": "2026-09-02T15:55:22.628829",
+    "event": "no_change",
+    "summary": "无变化"
+  },
+  {
+    "time": "2026-09-02T15:56:23.359313",
     "event": "no_change",
     "summary": "无变化"
   }

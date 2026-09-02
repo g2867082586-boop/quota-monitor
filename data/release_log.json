@@ -41350,6 +41350,30 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-02T15:19:41+08:00",
+      "count": 3,
+      "items": [
+        {
+          "date": "11/07/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "11/14/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-g"
+        },
+        {
+          "date": "11/21/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-g"
+        }
+      ]
     }
   ],
   "backfill": {

@@ -41446,6 +41446,30 @@
           "status": "quota-g"
         }
       ]
+    },
+    {
+      "time": "2026-09-02T15:34:26+08:00",
+      "count": 3,
+      "items": [
+        {
+          "date": "11/28/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-g"
+        },
+        {
+          "date": "12/05/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-g"
+        },
+        {
+          "date": "12/12/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-g"
+        }
+      ]
     }
   ],
   "backfill": {

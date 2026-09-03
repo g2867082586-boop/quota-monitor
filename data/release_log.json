@@ -44164,6 +44164,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-03T12:27:53+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "10/08/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

@@ -139,7 +139,7 @@
     "09/18/2026|RHK|K": "no-quotaK",
     "09/18/2026|RKO|R": "quota-r",
     "09/18/2026|RKO|K": "no-quotaK",
-    "09/18/2026|RTK|R": "quota-y",
+    "09/18/2026|RTK|R": "quota-r",
     "09/18/2026|RTK|K": "no-quotaK",
     "09/18/2026|TMO|R": "quota-r",
     "09/18/2026|TMO|K": "no-quotaK",
@@ -185,7 +185,7 @@
     "09/23/2026|FTO|K": "no-quotaK",
     "09/23/2026|RHK|R": "quota-y",
     "09/23/2026|RHK|K": "no-quotaK",
-    "09/23/2026|RKO|R": "quota-y",
+    "09/23/2026|RKO|R": "quota-r",
     "09/23/2026|RKO|K": "no-quotaK",
     "09/23/2026|RTK|R": "quota-r",
     "09/23/2026|RTK|K": "no-quotaK",
@@ -253,7 +253,7 @@
     "09/30/2026|TMO|K": "no-quotaK",
     "09/30/2026|YLO|R": "quota-r",
     "09/30/2026|YLO|K": "no-quotaK",
-    "10/02/2026|FTO|R": "quota-y",
+    "10/02/2026|FTO|R": "quota-r",
     "10/02/2026|FTO|K": "no-quotaK",
     "10/02/2026|RHK|R": "quota-r",
     "10/02/2026|RHK|K": "no-quotaK",
@@ -349,7 +349,7 @@
     "10/10/2026|TMO|K": "no-quotaK",
     "10/10/2026|YLO|R": "quota-r",
     "10/10/2026|YLO|K": "no-quotaK",
-    "10/12/2026|FTO|R": "quota-y",
+    "10/12/2026|FTO|R": "quota-r",
     "10/12/2026|FTO|K": "no-quotaK",
     "10/12/2026|RHK|R": "quota-y",
     "10/12/2026|RHK|K": "no-quotaK",
@@ -1154,7 +1154,7 @@
     "12/31/2026|YLO|R": "quota-g",
     "12/31/2026|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-04T14:59:41",
+  "last_snapshot_time": "2026-09-04T15:00:15",
   "pending_release_signals": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
@@ -1719,7 +1719,7 @@
     },
     "09/23/2026|RKO|R": {
       "notified_at": 1788505112.9711292,
-      "unavailable_since": null
+      "unavailable_since": 1788505213.8438218
     },
     "09/28/2026|RHK|R": {
       "notified_at": 1788505112.9711292,
@@ -1731,15 +1731,15 @@
     },
     "09/18/2026|RTK|R": {
       "notified_at": 1788505176.856149,
-      "unavailable_since": null
+      "unavailable_since": 1788505213.8438218
     },
     "10/02/2026|FTO|R": {
       "notified_at": 1788505176.856149,
-      "unavailable_since": null
+      "unavailable_since": 1788505213.8438218
     },
     "10/12/2026|FTO|R": {
       "notified_at": 1788505176.856149,
-      "unavailable_since": null
+      "unavailable_since": 1788505213.8438218
     }
   }
 }

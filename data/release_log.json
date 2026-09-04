@@ -54646,6 +54646,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-04T22:04:37+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "11/02/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

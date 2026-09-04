@@ -1,10 +1,5 @@
 [
   {
-    "time": "2026-09-04T00:28:24.642249",
-    "event": "no_change",
-    "summary": "无变化"
-  },
-  {
     "time": "2026-09-04T00:29:30.466343",
     "event": "no_change",
     "summary": "无变化"
@@ -2614,5 +2609,10 @@
     "time": "2026-09-04T09:03:13.735192",
     "event": "no_change",
     "summary": "无变化"
+  },
+  {
+    "time": "2026-09-04T09:04:15.977378",
+    "event": "quota_change_outside_notification_window",
+    "summary": "新增配额不在未来两周内，未推送"
   }
 ]

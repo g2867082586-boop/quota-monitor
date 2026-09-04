@@ -53146,6 +53146,36 @@
           "status": "quota-g"
         }
       ]
+    },
+    {
+      "time": "2026-09-04T15:51:33+08:00",
+      "count": 2,
+      "items": [
+        {
+          "date": "09/18/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-g"
+        },
+        {
+          "date": "09/25/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-g"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-04T15:52:10+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "09/11/2026",
+          "office": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

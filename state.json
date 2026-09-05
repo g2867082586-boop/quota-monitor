@@ -427,7 +427,7 @@
     "10/21/2026|RHK|K": "no-quotaK",
     "10/21/2026|RKO|R": "quota-r",
     "10/21/2026|RKO|K": "no-quotaK",
-    "10/21/2026|RTK|R": "quota-y",
+    "10/21/2026|RTK|R": "quota-r",
     "10/21/2026|RTK|K": "no-quotaK",
     "10/21/2026|TMO|R": "quota-r",
     "10/21/2026|TMO|K": "no-quotaK",
@@ -1154,7 +1154,7 @@
     "01/02/2027|YLO|R": "quota-g",
     "01/02/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-05T16:21:28",
+  "last_snapshot_time": "2026-09-05T16:22:20",
   "pending_release_signals": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
@@ -1465,29 +1465,9 @@
       "notified_at": 1788585550.212946,
       "unavailable_since": null
     },
-    "10/15/2026|TMO|R": {
-      "notified_at": 1788592879.7811334,
-      "unavailable_since": 1788596488.880344
-    },
-    "10/16/2026|YLO|R": {
-      "notified_at": 1788592879.7811334,
-      "unavailable_since": 1788596488.880344
-    },
-    "10/20/2026|RTK|R": {
-      "notified_at": 1788592879.7811334,
-      "unavailable_since": 1788596488.880344
-    },
-    "10/20/2026|YLO|R": {
-      "notified_at": 1788592879.7811334,
-      "unavailable_since": 1788596488.880344
-    },
     "10/21/2026|RTK|R": {
       "notified_at": 1788592879.7811334,
-      "unavailable_since": null
-    },
-    "10/22/2026|RHK|R": {
-      "notified_at": 1788592879.7811334,
-      "unavailable_since": 1788596488.880344
+      "unavailable_since": 1788596539.0720894
     },
     "10/22/2026|YLO|R": {
       "notified_at": 1788592879.7811334,
@@ -1497,17 +1477,9 @@
       "notified_at": 1788592879.7811334,
       "unavailable_since": null
     },
-    "10/26/2026|RHK|R": {
-      "notified_at": 1788592879.7811334,
-      "unavailable_since": 1788596488.880344
-    },
     "10/29/2026|FTO|R": {
       "notified_at": 1788592879.7811334,
       "unavailable_since": null
-    },
-    "10/29/2026|RKO|R": {
-      "notified_at": 1788592879.7811334,
-      "unavailable_since": 1788596488.880344
     },
     "10/30/2026|RKO|R": {
       "notified_at": 1788592879.7811334,

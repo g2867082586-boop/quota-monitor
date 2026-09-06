@@ -57478,6 +57478,18 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "time": "2026-09-06T21:37:33+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "10/26/2026",
+          "office": "TMO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
   "backfill": {

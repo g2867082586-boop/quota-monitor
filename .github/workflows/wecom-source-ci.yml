@@ -1,0 +1,19 @@
+name: WeCom source checks
+on:
+  pull_request:
+    paths: ['ci_run.py', 'quota_monitor/**', 'tests/**', '.github/workflows/fetch.yml', '.github/workflows/wecom-source-ci.yml']
+  push:
+    branches: ['codex/observer-wecom-source-20260911']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests cryptography pytest
+      - run: python -m unittest discover -s tests -p test_wecom_source_switch.py
+      - run: python -m pytest -q tests/test_wecom_outbox.py tests/test_notification_window.py tests/test_notification_state.py tests/test_wecom_notify.py

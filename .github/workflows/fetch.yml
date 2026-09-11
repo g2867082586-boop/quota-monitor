@@ -45,12 +45,28 @@ jobs:
       - name: Install dependencies
         run: pip install requests cryptography
 
+      - name: Check quota destination continuity
+        env:
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+          EXPECTED_SHA256: ${{ vars.QUOTA_WECOM_EXPECTED_SHA256 }}
+        run: |
+          python - <<'PY'
+          import hashlib, os
+          expected = os.getenv("EXPECTED_SHA256", "")
+          if expected:
+              actual = hashlib.sha256(os.getenv("WECOM_WEBHOOK_URL", "").strip().encode()).hexdigest()
+              print("QUOTA_DESTINATION_MATCH=" + str(actual == expected).lower())
+          else:
+              print("QUOTA_DESTINATION_MATCH=not_requested")
+          PY
+
       - name: Fetch quota & notify
         env:
           GH_TOKEN: ${{ github.token }}
           FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
           FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID }}
+          QUOTA_WECOM_SOURCE: ${{ vars.QUOTA_WECOM_SOURCE || 'legacy' }}
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           NOTIFICATIONS_PAUSED: ${{ vars.NOTIFICATIONS_PAUSED || 'false' }}
           WECOM_TEST_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.test_wecom && '1' || '0' }}

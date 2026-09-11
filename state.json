@@ -437,7 +437,7 @@
     "10/28/2026|FTO|K": "no-quotaK",
     "10/28/2026|RHK|R": "quota-r",
     "10/28/2026|RHK|K": "no-quotaK",
-    "10/28/2026|RKO|R": "quota-r",
+    "10/28/2026|RKO|R": "quota-y",
     "10/28/2026|RKO|K": "no-quotaK",
     "10/28/2026|RTK|R": "quota-r",
     "10/28/2026|RTK|K": "no-quotaK",
@@ -455,9 +455,9 @@
     "10/29/2026|RTK|K": "no-quotaK",
     "10/29/2026|TMO|R": "quota-r",
     "10/29/2026|TMO|K": "no-quotaK",
-    "10/29/2026|YLO|R": "quota-r",
+    "10/29/2026|YLO|R": "quota-y",
     "10/29/2026|YLO|K": "no-quotaK",
-    "10/30/2026|FTO|R": "quota-r",
+    "10/30/2026|FTO|R": "quota-y",
     "10/30/2026|FTO|K": "no-quotaK",
     "10/30/2026|RHK|R": "quota-r",
     "10/30/2026|RHK|K": "no-quotaK",
@@ -553,7 +553,7 @@
     "11/07/2026|TMO|K": "no-quotaK",
     "11/07/2026|YLO|R": "quota-r",
     "11/07/2026|YLO|K": "no-quotaK",
-    "11/09/2026|FTO|R": "quota-r",
+    "11/09/2026|FTO|R": "quota-y",
     "11/09/2026|FTO|K": "no-quotaK",
     "11/09/2026|RHK|R": "quota-r",
     "11/09/2026|RHK|K": "no-quotaK",
@@ -1154,9 +1154,41 @@
     "01/08/2027|YLO|R": "quota-g",
     "01/08/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-11T21:05:35",
-  "pending_release_signals": [],
+  "last_snapshot_time": "2026-09-11T21:06:04",
   "pending_wecom": [],
+  "pending_release_signals": [
+    {
+      "schema": "hkid.quota.release.v1",
+      "event_id": "648cfd1ec5f30791f4c9d79b139690c0673177acb2ad5f6fcb03ab75b2d92571",
+      "observed_at": "2026-09-11T13:05:59.273821Z",
+      "released": [
+        {
+          "date": "2026-10-28",
+          "office_id": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "2026-10-29",
+          "office_id": "YLO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "2026-10-30",
+          "office_id": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "2026-11-09",
+          "office_id": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
+    }
+  ],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
       "notified_at": 1787554067.9531999,
@@ -1210,25 +1242,25 @@
       "notified_at": 1789026508.7218573,
       "unavailable_since": null
     },
-    "10/28/2026|RKO|R": {
-      "notified_at": 1789130131.151301,
-      "unavailable_since": 1789131932.3349774
-    },
-    "10/29/2026|YLO|R": {
-      "notified_at": 1789130131.151301,
-      "unavailable_since": 1789131932.3349774
-    },
-    "10/30/2026|FTO|R": {
-      "notified_at": 1789130131.151301,
-      "unavailable_since": 1789131932.3349774
-    },
     "11/05/2026|RTK|R": {
       "notified_at": 1789130131.151301,
       "unavailable_since": null
     },
+    "10/28/2026|RKO|R": {
+      "notified_at": 1789131959.1908383,
+      "unavailable_since": null
+    },
+    "10/29/2026|YLO|R": {
+      "notified_at": 1789131959.1908383,
+      "unavailable_since": null
+    },
+    "10/30/2026|FTO|R": {
+      "notified_at": 1789131959.1908383,
+      "unavailable_since": null
+    },
     "11/09/2026|FTO|R": {
-      "notified_at": 1789130131.151301,
-      "unavailable_since": 1789131932.3349774
+      "notified_at": 1789131959.1908383,
+      "unavailable_since": null
     }
   }
 }

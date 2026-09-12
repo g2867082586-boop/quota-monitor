@@ -491,7 +491,7 @@
     "11/03/2026|RTK|K": "no-quotaK",
     "11/03/2026|TMO|R": "quota-r",
     "11/03/2026|TMO|K": "no-quotaK",
-    "11/03/2026|YLO|R": "quota-y",
+    "11/03/2026|YLO|R": "quota-r",
     "11/03/2026|YLO|K": "no-quotaK",
     "11/04/2026|FTO|R": "quota-r",
     "11/04/2026|FTO|K": "no-quotaK",
@@ -541,7 +541,7 @@
     "11/07/2026|TMO|K": "no-quotaK",
     "11/07/2026|YLO|R": "quota-r",
     "11/07/2026|YLO|K": "no-quotaK",
-    "11/09/2026|FTO|R": "quota-y",
+    "11/09/2026|FTO|R": "quota-r",
     "11/09/2026|FTO|K": "no-quotaK",
     "11/09/2026|RHK|R": "quota-y",
     "11/09/2026|RHK|K": "no-quotaK",
@@ -629,7 +629,7 @@
     "11/17/2026|FTO|K": "no-quotaK",
     "11/17/2026|RHK|R": "quota-g",
     "11/17/2026|RHK|K": "no-quotaK",
-    "11/17/2026|RKO|R": "quota-y",
+    "11/17/2026|RKO|R": "quota-r",
     "11/17/2026|RKO|K": "no-quotaK",
     "11/17/2026|RTK|R": "quota-g",
     "11/17/2026|RTK|K": "no-quotaK",
@@ -1154,9 +1154,9 @@
     "01/09/2027|YLO|R": "quota-g",
     "01/09/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-12T12:16:53",
-  "pending_release_signals": [],
+  "last_snapshot_time": "2026-09-12T12:17:27",
   "pending_wecom": [],
+  "pending_release_signals": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
       "notified_at": 1787554067.9531999,
@@ -1204,7 +1204,7 @@
     },
     "11/03/2026|YLO|R": {
       "notified_at": 1789177623.3086267,
-      "unavailable_since": null
+      "unavailable_since": 1789186645.78017
     },
     "11/05/2026|RTK|R": {
       "notified_at": 1789177623.3086267,
@@ -1220,7 +1220,7 @@
     },
     "11/09/2026|FTO|R": {
       "notified_at": 1789177623.3086267,
-      "unavailable_since": null
+      "unavailable_since": 1789186645.78017
     },
     "11/09/2026|RHK|R": {
       "notified_at": 1789177623.3086267,
@@ -1240,7 +1240,7 @@
     },
     "11/17/2026|RKO|R": {
       "notified_at": 1789177623.3086267,
-      "unavailable_since": null
+      "unavailable_since": 1789186645.78017
     },
     "11/18/2026|RKO|R": {
       "notified_at": 1789177623.3086267,

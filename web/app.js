@@ -307,7 +307,7 @@ async function init() {
     if (e.key === "Enter") handleSubscribe();
   });
 
-  // 页面每 2 分钟绕过 Pages CDN 缓存刷新；后端每分钟触发并检查两次。
+  // 页面每 2 分钟绕过 Pages CDN 缓存刷新；后端每分钟触发并检查一次。
   setInterval(async () => {
     try {
       await loadData();
@@ -424,7 +424,7 @@ function renderHeatmap(pd) {
     const emptyMessage = trendLoadFailed
       ? "⚠️ 数据暂时加载失败，请稍后重试"
       : "📊 数据收集中，放号规律将在检测到配额变化后自动生成";
-    document.getElementById("tmBody").innerHTML = `<tr><td colspan="${N+1}" style="text-align:center;padding:48px 16px;color:var(--text2);font-size:0.9rem">${emptyMessage}<br><small style="color:var(--text2);opacity:0.7">系统每分钟触发、每轮间隔 30 秒检查两次（08:00-24:00）</small></td></tr>`;
+    document.getElementById("tmBody").innerHTML = `<tr><td colspan="${N+1}" style="text-align:center;padding:48px 16px;color:var(--text2);font-size:0.9rem">${emptyMessage}<br><small style="color:var(--text2);opacity:0.7">系统每分钟触发并检查一次（08:00-24:00）</small></td></tr>`;
     return;
   }
 

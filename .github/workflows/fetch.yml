@@ -1,5 +1,5 @@
 name: Fetch Quota & Notify
-# 外部每分钟触发一次；自动任务会在 30 秒间隔内检查两次。
+# 外部每分钟触发一次；每次 dispatch 只检查一次，避免运行时间超过触发间隔。
 
 on:
   workflow_dispatch:
@@ -70,7 +70,7 @@ jobs:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           NOTIFICATIONS_PAUSED: ${{ vars.NOTIFICATIONS_PAUSED || 'false' }}
           WECOM_TEST_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.test_wecom && '1' || '0' }}
-          POLL_ITERATIONS: ${{ github.event_name == 'repository_dispatch' && '2' || '1' }}
+          POLL_ITERATIONS: "1"
           POLL_INTERVAL_SECONDS: "30"
           # Re-arm as soon as a row becomes unavailable. A later red -> yellow
           # transition must wake HKID again and may notify the quota group again.
@@ -93,15 +93,16 @@ jobs:
           files=(
             data/quota.json
             data/last_update.json
-            data/run.log
             data/release_log.json
             data/feishu_subs.json
             data/feishu_subs_log.json
             data/notify_template.json
             data/notify_log.json
-            state.json
             notify_log.json
           )
+          # data/run.log and state.json are persisted through the Contents API
+          # during ci_run.py. Staging them here rebases stale copies over those
+          # commits and caused repeated state.json conflicts.
           for file in "${files[@]}"; do
             if [ -e "$file" ]; then
               git add -- "$file"

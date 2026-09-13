@@ -1,6 +1,6 @@
 import os
 import unittest
-from unittest.mock import call, patch
+from unittest.mock import patch
 
 from ci_run import _notification_rearm_seconds, _poll_settings, main
 
@@ -40,13 +40,13 @@ class PollSettingsTest(unittest.TestCase):
 class PollLoopTest(unittest.TestCase):
     @patch("ci_run.time.sleep")
     @patch("ci_run._run_poll_cycle")
-    def test_repository_dispatch_runs_twice_and_sleeps_once(
+    def test_repository_dispatch_runs_once_without_sleep(
         self, run_poll_cycle, sleep
     ):
         with patch.dict(
             os.environ,
             {
-                "POLL_ITERATIONS": "2",
+                "POLL_ITERATIONS": "1",
                 "POLL_INTERVAL_SECONDS": "30",
                 "WECOM_TEST_ONLY": "0",
             },
@@ -54,11 +54,8 @@ class PollLoopTest(unittest.TestCase):
         ):
             main()
 
-        self.assertEqual(
-            run_poll_cycle.call_args_list,
-            [call(log_no_change=False), call(log_no_change=True)],
-        )
-        sleep.assert_called_once_with(30)
+        run_poll_cycle.assert_called_once_with(log_no_change=True)
+        sleep.assert_not_called()
 
     @patch("ci_run.time.sleep")
     @patch("ci_run._run_poll_cycle")

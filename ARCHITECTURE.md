@@ -71,7 +71,7 @@ python ci_run.py
    {"event_type":"fetch-quota"}
    ```
 
-   每个自动任务会立即检查一次，等待 30 秒后再检查一次；GitHub 原生 `schedule`
+   每个自动任务检查一次；GitHub 原生 `schedule`
    最短为 5 分钟且可能排队。外部触发器只是按时唤醒 Actions，真正的抓取、
    差异判断和通知仍由仓库代码完成。
 
@@ -152,7 +152,7 @@ cron-job.org（每 1 分钟）
   ├── 触发 fetch-quota（08:00-24:00）
   │     ↓
   │   GitHub Actions (ci_run.py)
-  │     ├── fetch_snapshot() → 等待 30 秒 → fetch_snapshot()
+  │     ├── fetch_snapshot()
   │     ├── detect_changes() — 对比快照，检测 newly_available
   │     ├── 飞书群聊广播 → ThreadPoolExecutor 并行（多群逗号分隔）
   │     ├── 企业微信群广播 → Webhook Markdown（超长自动分片）
@@ -358,5 +358,5 @@ CI 检测到 `newly_available` 变化时，通过 GitHub API 追加到 `data/run
 | GitHub Actions (Ubuntu) | fetch-quota: 配额检测 + 飞书/企业微信通知 + 数据导出 + Pages 后备部署 |
 | GitHub Actions (Ubuntu) | feishu-ws: 飞书长连接客户端，每 5 小时启动，接收私聊消息 |
 | Cloudflare Workers | 飞书 DM API/管理后台 API/群发：接收请求 → 调 GitHub API 读写文件 |
-| cron-job.org | 外部定时触发器，每 1 分钟 POST fetch-quota；任务内部间隔 30 秒检查两次。如仍使用飞书长连接，再每 5 小时 POST feishu-ws |
+| cron-job.org | 外部定时触发器，每 1 分钟 POST fetch-quota；每次触发检查一次。如仍使用飞书长连接，再每 5 小时 POST feishu-ws |
 | 本地 Python CLI | 开发者调试：`python monitor.py --once` |

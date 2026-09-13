@@ -1,22 +1,5 @@
 [
   {
-    "time": "2026-09-13T08:00:41.873285+08:00",
-    "event": "wecom_delivery",
-    "wecom": "waiting",
-    "pending": 0
-  },
-  {
-    "time": "2026-09-13T00:01:15.342230",
-    "event": "no_change",
-    "summary": "无变化"
-  },
-  {
-    "time": "2026-09-13T08:01:16.605824+08:00",
-    "event": "wecom_delivery",
-    "wecom": "waiting",
-    "pending": 0
-  },
-  {
     "time": "2026-09-13T08:03:26.297551+08:00",
     "event": "wecom_delivery",
     "wecom": "waiting",
@@ -2847,6 +2830,23 @@
   },
   {
     "time": "2026-09-13T11:16:14.967015+08:00",
+    "event": "wecom_delivery",
+    "wecom": "waiting",
+    "pending": 0
+  },
+  {
+    "time": "2026-09-13T11:16:39.237020+08:00",
+    "event": "wecom_delivery",
+    "wecom": "waiting",
+    "pending": 0
+  },
+  {
+    "time": "2026-09-13T03:17:12.831297",
+    "event": "quota_change_outside_notification_window",
+    "summary": "新增配额不在未来两周内，未推送"
+  },
+  {
+    "time": "2026-09-13T11:17:15.732566+08:00",
     "event": "wecom_delivery",
     "wecom": "waiting",
     "pending": 0

@@ -573,3 +573,4 @@
 [2026-09-13 10:51:26 BJT] OK | 配额状态无变化
 [2026-09-13 10:52:26 BJT] OK | 配额状态无变化
 [2026-09-13 10:53:25 BJT] OK | 配额状态无变化
+[2026-09-13 10:53:53 BJT] ERROR | ReleaseSignal permanent rejection: 1

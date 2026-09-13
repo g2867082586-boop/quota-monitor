@@ -110,6 +110,9 @@ jobs:
           done
           if ! git diff --staged --quiet; then
             git commit -m "🔄 Update quota data"
+            # Drop the local copies after their Contents API commits. Keeping
+            # them dirty makes git pull --rebase refuse to start.
+            git restore --worktree -- data/run.log state.json
             git pull --rebase origin main
             git push origin HEAD:main
           else

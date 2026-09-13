@@ -36,6 +36,15 @@ class WorkflowSafetyTests(unittest.TestCase):
         self.assertNotIn("state.json", files_block)
         self.assertIn("Contents API", workflow)
 
+    def test_contents_api_files_are_clean_before_rebase(self):
+        workflow = FETCH_WORKFLOW.read_text(encoding="utf-8")
+
+        restore_position = workflow.index(
+            "git restore --worktree -- data/run.log state.json"
+        )
+        rebase_position = workflow.index("git pull --rebase origin main")
+        self.assertLess(restore_position, rebase_position)
+
     def test_release_log_is_validated_before_commit_and_deploy(self):
         workflow = FETCH_WORKFLOW.read_text(encoding="utf-8")
 

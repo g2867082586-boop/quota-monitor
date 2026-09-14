@@ -3,18 +3,6 @@
   "monitoring_since": "2026-08-21T10:38:41+08:00",
   "events": [
     {
-      "time": "2026-08-26T18:27:02+08:00",
-      "count": 1,
-      "items": [
-        {
-          "date": "10/27/2026",
-          "office": "YLO",
-          "quota_type": "R",
-          "status": "quota-y"
-        }
-      ]
-    },
-    {
       "time": "2026-08-26T18:29:27+08:00",
       "count": 1,
       "items": [
@@ -78310,6 +78298,18 @@
     },
     {
       "time": "2026-09-14T17:43:19+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "11/04/2026",
+          "office": "FTO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-14T17:46:19+08:00",
       "count": 1,
       "items": [
         {

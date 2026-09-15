@@ -2994,3 +2994,4 @@
 [2026-09-15 10:52:19 BJT] ALERT | 两周内新配额放出: 2 个
 [2026-09-15 10:52:22 BJT] ERROR | ReleaseSignal permanent rejection: 1
 [2026-09-15 10:53:17 BJT] ALERT | 两周内新配额放出: 3 个
+[2026-09-15 10:53:19 BJT] ERROR | ReleaseSignal permanent rejection: 1

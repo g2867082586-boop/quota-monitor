@@ -3006,3 +3006,4 @@
 [2026-09-15 11:00:37 BJT] ERROR | ReleaseSignal permanent rejection: 1
 [2026-09-15 11:01:22 BJT] OK | 配额状态无变化
 [2026-09-15 11:02:18 BJT] ALERT | 两周内新配额放出: 5 个
+[2026-09-15 11:02:20 BJT] ERROR | ReleaseSignal permanent rejection: 1

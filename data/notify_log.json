@@ -1,16 +1,5 @@
 [
   {
-    "time": "2026-09-15T02:47:18.418129",
-    "event": "no_change",
-    "summary": "无变化"
-  },
-  {
-    "time": "2026-09-15T10:47:19.640056+08:00",
-    "event": "wecom_delivery",
-    "wecom": "waiting",
-    "pending": 0
-  },
-  {
     "time": "2026-09-15T02:48:22.062550",
     "event": "quota_change",
     "changes": 5,
@@ -2769,6 +2758,17 @@
   },
   {
     "time": "2026-09-15T15:05:07.265070+08:00",
+    "event": "wecom_delivery",
+    "wecom": "waiting",
+    "pending": 0
+  },
+  {
+    "time": "2026-09-15T07:05:35.893486",
+    "event": "no_change",
+    "summary": "无变化"
+  },
+  {
+    "time": "2026-09-15T15:05:37.420249+08:00",
     "event": "wecom_delivery",
     "wecom": "waiting",
     "pending": 0

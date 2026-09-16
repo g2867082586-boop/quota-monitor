@@ -4690,3 +4690,4 @@
 [2026-09-16 14:10:28 BJT] ERROR | ReleaseSignal permanent rejection: 1
 [2026-09-16 14:11:19 BJT] OK | 配额状态无变化
 [2026-09-16 14:12:18 BJT] SKIP | 新增配额不在未来两周内: 1 个
+[2026-09-16 14:12:20 BJT] ERROR | ReleaseSignal permanent rejection: 1

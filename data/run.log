@@ -4470,3 +4470,4 @@
 [2026-09-16 10:47:25 BJT] ERROR | ReleaseSignal permanent rejection: 1
 [2026-09-16 10:48:21 BJT] SKIP | 新增配额不在未来两周内: 3 个
 [2026-09-16 10:48:26 BJT] ERROR | ReleaseSignal permanent rejection: 1
+[2026-09-16 10:49:20 BJT] OK | 配额状态无变化

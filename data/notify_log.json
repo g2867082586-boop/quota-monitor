@@ -1,16 +1,5 @@
 [
   {
-    "time": "2026-09-16T12:37:24.571769",
-    "event": "quota_change_outside_notification_window",
-    "summary": "新增配额不在未来两周内，未推送"
-  },
-  {
-    "time": "2026-09-16T20:37:28.644887+08:00",
-    "event": "wecom_delivery",
-    "wecom": "waiting",
-    "pending": 0
-  },
-  {
     "time": "2026-09-16T12:38:19.238278",
     "event": "no_change",
     "summary": "无变化"
@@ -2745,6 +2734,17 @@
   },
   {
     "time": "2026-09-17T00:49:30.688461+08:00",
+    "event": "wecom_delivery",
+    "wecom": "waiting",
+    "pending": 0
+  },
+  {
+    "time": "2026-09-16T16:50:33.020721",
+    "event": "no_change",
+    "summary": "无变化"
+  },
+  {
+    "time": "2026-09-17T00:50:35.224249+08:00",
     "event": "wecom_delivery",
     "wecom": "waiting",
     "pending": 0

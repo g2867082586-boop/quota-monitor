@@ -1154,7 +1154,8 @@
     "01/14/2027|YLO|R": "quota-g",
     "01/14/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-17T17:21:42",
+  "last_snapshot_time": "2026-09-17T17:22:56",
+  "pending_wecom": [],
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -1310,7 +1311,6 @@
       ]
     }
   ],
-  "pending_wecom": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
       "notified_at": 1787554067.9531999,
@@ -1392,61 +1392,9 @@
       "notified_at": 1789607836.8792026,
       "unavailable_since": null
     },
-    "10/22/2026|RHK|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "10/23/2026|RHK|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "10/26/2026|RHK|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "10/27/2026|RHK|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "10/28/2026|RHK|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "10/29/2026|RHK|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "10/29/2026|RKO|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "11/02/2026|RHK|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "11/03/2026|TMO|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "11/09/2026|FTO|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "11/09/2026|RKO|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
     "11/09/2026|YLO|R": {
       "notified_at": 1789635983.4732604,
       "unavailable_since": null
-    },
-    "11/10/2026|RKO|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
-    },
-    "11/10/2026|RTK|R": {
-      "notified_at": 1789635983.4732604,
-      "unavailable_since": 1789636882.422009
     },
     "11/18/2026|RKO|R": {
       "notified_at": 1789635983.4732604,

@@ -5932,3 +5932,4 @@
 [2026-09-17 10:18:23 BJT] SKIP | 新增配额不在未来两周内: 14 个
 [2026-09-17 10:18:25 BJT] ERROR | ReleaseSignal permanent rejection: 1
 [2026-09-17 10:19:24 BJT] SKIP | 新增配额不在未来两周内: 1 个
+[2026-09-17 10:19:31 BJT] ERROR | ReleaseSignal permanent rejection: 1

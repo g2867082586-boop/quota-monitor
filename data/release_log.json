@@ -3,42 +3,6 @@
   "monitoring_since": "2026-08-21T10:38:41+08:00",
   "events": [
     {
-      "time": "2026-08-27T20:33:21+08:00",
-      "count": 5,
-      "items": [
-        {
-          "date": "10/29/2026",
-          "office": "YLO",
-          "quota_type": "R",
-          "status": "quota-y"
-        },
-        {
-          "date": "10/30/2026",
-          "office": "RKO",
-          "quota_type": "R",
-          "status": "quota-y"
-        },
-        {
-          "date": "10/30/2026",
-          "office": "RTK",
-          "quota_type": "R",
-          "status": "quota-y"
-        },
-        {
-          "date": "11/02/2026",
-          "office": "RKO",
-          "quota_type": "R",
-          "status": "quota-y"
-        },
-        {
-          "date": "11/09/2026",
-          "office": "RKO",
-          "quota_type": "R",
-          "status": "quota-y"
-        }
-      ]
-    },
-    {
       "time": "2026-08-27T20:34:25+08:00",
       "count": 1,
       "items": [
@@ -80663,6 +80627,18 @@
           "office": "RKO",
           "quota_type": "R",
           "status": "quota-g"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-18T11:56:59+08:00",
+      "count": 1,
+      "items": [
+        {
+          "date": "10/22/2026",
+          "office": "RHK",
+          "quota_type": "R",
+          "status": "quota-y"
         }
       ]
     }

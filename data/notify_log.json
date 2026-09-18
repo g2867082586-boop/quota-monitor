@@ -1,16 +1,5 @@
 [
   {
-    "time": "2026-09-18T00:23:19.873394",
-    "event": "no_change",
-    "summary": "无变化"
-  },
-  {
-    "time": "2026-09-18T08:24:29.933304+08:00",
-    "event": "wecom_delivery",
-    "wecom": "waiting",
-    "pending": 0
-  },
-  {
     "time": "2026-09-18T00:24:57.252344",
     "event": "no_change",
     "summary": "无变化"
@@ -2777,6 +2766,21 @@
   },
   {
     "time": "2026-09-18T17:35:59.651952+08:00",
+    "event": "wecom_delivery",
+    "wecom": "waiting",
+    "pending": 0
+  },
+  {
+    "time": "2026-09-18T09:36:30.993885",
+    "event": "quota_change",
+    "changes": 2,
+    "feishu": "skipped",
+    "feishu_dm": 0,
+    "wecom": "queued",
+    "summary": "两周内配额变化: 2 个日期"
+  },
+  {
+    "time": "2026-09-18T17:39:46.521032+08:00",
     "event": "wecom_delivery",
     "wecom": "waiting",
     "pending": 0

@@ -1154,7 +1154,8 @@
     "01/15/2027|YLO|R": "quota-g",
     "01/15/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-18T15:37:44",
+  "last_snapshot_time": "2026-09-18T15:40:48",
+  "pending_wecom": [],
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -3739,7 +3740,6 @@
       ]
     }
   ],
-  "pending_wecom": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
       "notified_at": 1787554067.9531999,
@@ -3828,14 +3828,6 @@
     "01/15/2027|RKO|R": {
       "notified_at": 1789703387.483108,
       "unavailable_since": null
-    },
-    "11/19/2026|RKO|R": {
-      "notified_at": 1789710404.0427115,
-      "unavailable_since": 1789716909.598362
-    },
-    "11/04/2026|RTK|R": {
-      "notified_at": 1789713339.8587694,
-      "unavailable_since": 1789716909.598362
     },
     "11/04/2026|YLO|R": {
       "notified_at": 1789713339.8587694,

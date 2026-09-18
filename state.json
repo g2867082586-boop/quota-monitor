@@ -1154,7 +1154,8 @@
     "01/15/2027|YLO|R": "quota-g",
     "01/15/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-18T14:40:45",
+  "last_snapshot_time": "2026-09-18T14:43:36",
+  "pending_wecom": [],
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -3382,7 +3383,6 @@
       ]
     }
   ],
-  "pending_wecom": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
       "notified_at": 1787554067.9531999,
@@ -3492,18 +3492,6 @@
       "notified_at": 1789710404.0427115,
       "unavailable_since": null
     },
-    "09/23/2026|RHK|R": {
-      "notified_at": 1789713339.8587694,
-      "unavailable_since": 1789713500.4319086
-    },
-    "09/25/2026|RKO|R": {
-      "notified_at": 1789713339.8587694,
-      "unavailable_since": 1789713500.4319086
-    },
-    "09/25/2026|TMO|R": {
-      "notified_at": 1789713339.8587694,
-      "unavailable_since": 1789713500.4319086
-    },
     "09/29/2026|RHK|R": {
       "notified_at": 1789713339.8587694,
       "unavailable_since": null
@@ -3512,14 +3500,6 @@
       "notified_at": 1789713339.8587694,
       "unavailable_since": null
     },
-    "10/02/2026|RHK|R": {
-      "notified_at": 1789713339.8587694,
-      "unavailable_since": 1789713500.4319086
-    },
-    "10/02/2026|RTK|R": {
-      "notified_at": 1789713339.8587694,
-      "unavailable_since": 1789713500.4319086
-    },
     "10/02/2026|TMO|R": {
       "notified_at": 1789713339.8587694,
       "unavailable_since": null
@@ -3527,10 +3507,6 @@
     "10/05/2026|RHK|R": {
       "notified_at": 1789713339.8587694,
       "unavailable_since": null
-    },
-    "10/05/2026|RTK|R": {
-      "notified_at": 1789713339.8587694,
-      "unavailable_since": 1789713500.4319086
     },
     "10/06/2026|RHK|R": {
       "notified_at": 1789713339.8587694,
@@ -3647,10 +3623,6 @@
     "10/29/2026|RKO|R": {
       "notified_at": 1789713339.8587694,
       "unavailable_since": null
-    },
-    "10/29/2026|RTK|R": {
-      "notified_at": 1789713339.8587694,
-      "unavailable_since": 1789713500.4319086
     },
     "10/29/2026|YLO|R": {
       "notified_at": 1789713339.8587694,

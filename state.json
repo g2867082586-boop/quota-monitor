@@ -391,7 +391,7 @@
     "10/30/2026|RHK|K": "no-quotaK",
     "10/30/2026|RKO|R": "quota-r",
     "10/30/2026|RKO|K": "no-quotaK",
-    "10/30/2026|RTK|R": "quota-r",
+    "10/30/2026|RTK|R": "quota-y",
     "10/30/2026|RTK|K": "no-quotaK",
     "10/30/2026|TMO|R": "quota-r",
     "10/30/2026|TMO|K": "no-quotaK",
@@ -557,7 +557,7 @@
     "11/16/2026|FTO|K": "no-quotaK",
     "11/16/2026|RHK|R": "quota-g",
     "11/16/2026|RHK|K": "no-quotaK",
-    "11/16/2026|RKO|R": "quota-r",
+    "11/16/2026|RKO|R": "quota-y",
     "11/16/2026|RKO|K": "no-quotaK",
     "11/16/2026|RTK|R": "quota-g",
     "11/16/2026|RTK|K": "no-quotaK",
@@ -1154,7 +1154,8 @@
     "01/15/2027|YLO|R": "quota-g",
     "01/15/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-18T12:26:22",
+  "last_snapshot_time": "2026-09-18T12:28:29",
+  "pending_wecom": [],
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -2243,9 +2244,27 @@
           "status": "quota-y"
         }
       ]
+    },
+    {
+      "schema": "hkid.quota.release.v1",
+      "event_id": "b4b6482542d1aa7177d21c737296cbc177d9f72ec71d307fd8ad306c072a9052",
+      "observed_at": "2026-09-18T04:26:45.786095Z",
+      "released": [
+        {
+          "date": "2026-10-30",
+          "office_id": "RTK",
+          "quota_type": "R",
+          "status": "quota-y"
+        },
+        {
+          "date": "2026-11-16",
+          "office_id": "RKO",
+          "quota_type": "R",
+          "status": "quota-y"
+        }
+      ]
     }
   ],
-  "pending_wecom": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
       "notified_at": 1787554067.9531999,
@@ -2388,12 +2407,12 @@
       "unavailable_since": null
     },
     "10/30/2026|RTK|R": {
-      "notified_at": 1789705358.6590784,
-      "unavailable_since": 1789705484.2065287
+      "notified_at": 1789705605.702014,
+      "unavailable_since": null
     },
     "11/16/2026|RKO|R": {
-      "notified_at": 1789705358.6590784,
-      "unavailable_since": 1789705484.2065287
+      "notified_at": 1789705605.702014,
+      "unavailable_since": null
     }
   }
 }

@@ -457,7 +457,7 @@
     "11/09/2026|TMO|K": "no-quotaK",
     "11/09/2026|YLO|R": "quota-r",
     "11/09/2026|YLO|K": "no-quotaK",
-    "11/10/2026|FTO|R": "quota-y",
+    "11/10/2026|FTO|R": "quota-r",
     "11/10/2026|FTO|K": "no-quotaK",
     "11/10/2026|RHK|R": "quota-r",
     "11/10/2026|RHK|K": "no-quotaK",
@@ -469,7 +469,7 @@
     "11/10/2026|TMO|K": "no-quotaK",
     "11/10/2026|YLO|R": "quota-r",
     "11/10/2026|YLO|K": "no-quotaK",
-    "11/11/2026|FTO|R": "quota-y",
+    "11/11/2026|FTO|R": "quota-r",
     "11/11/2026|FTO|K": "no-quotaK",
     "11/11/2026|RHK|R": "quota-y",
     "11/11/2026|RHK|K": "no-quotaK",
@@ -513,7 +513,7 @@
     "11/14/2026|RKO|K": "no-quotaK",
     "11/14/2026|RTK|R": "quota-r",
     "11/14/2026|RTK|K": "no-quotaK",
-    "11/14/2026|TMO|R": "quota-y",
+    "11/14/2026|TMO|R": "quota-r",
     "11/14/2026|TMO|K": "no-quotaK",
     "11/14/2026|YLO|R": "quota-r",
     "11/14/2026|YLO|K": "no-quotaK",
@@ -1154,7 +1154,8 @@
     "01/19/2027|YLO|R": "quota-g",
     "01/19/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-09-22T12:05:56",
+  "last_snapshot_time": "2026-09-22T12:10:55",
+  "pending_wecom": [],
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -6312,7 +6313,6 @@
       ]
     }
   ],
-  "pending_wecom": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
       "notified_at": 1787554067.9531999,
@@ -6402,17 +6402,13 @@
       "notified_at": 1789994738.5936713,
       "unavailable_since": null
     },
-    "11/09/2026|TMO|R": {
-      "notified_at": 1790046070.8030632,
-      "unavailable_since": 1790049654.3999624
-    },
     "11/10/2026|FTO|R": {
       "notified_at": 1790046070.8030632,
-      "unavailable_since": null
+      "unavailable_since": 1790049973.2073276
     },
     "11/11/2026|FTO|R": {
       "notified_at": 1790046070.8030632,
-      "unavailable_since": null
+      "unavailable_since": 1790049973.2073276
     },
     "11/11/2026|RHK|R": {
       "notified_at": 1790046070.8030632,
@@ -6428,15 +6424,11 @@
     },
     "11/14/2026|TMO|R": {
       "notified_at": 1790046070.8030632,
-      "unavailable_since": null
+      "unavailable_since": 1790049973.2073276
     },
     "11/16/2026|FTO|R": {
       "notified_at": 1790046070.8030632,
       "unavailable_since": null
-    },
-    "11/24/2026|RKO|R": {
-      "notified_at": 1790046070.8030632,
-      "unavailable_since": 1790049654.3999624
     },
     "12/12/2026|FTO|R": {
       "notified_at": 1790046070.8030632,

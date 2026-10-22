@@ -1154,7 +1154,8 @@
     "02/18/2027|YLO|R": "quota-g",
     "02/18/2027|YLO|K": "no-quotaK"
   },
-  "last_snapshot_time": "2026-10-22T15:58:58",
+  "last_snapshot_time": "2026-10-22T16:03:58",
+  "pending_wecom": [],
   "pending_release_signals": [
     {
       "schema": "hkid.quota.release.v1",
@@ -7539,7 +7540,6 @@
       ]
     }
   ],
-  "pending_wecom": [],
   "notification_episodes": {
     "12/17/2026|RKO|R": {
       "notified_at": 1787554067.9531999,
